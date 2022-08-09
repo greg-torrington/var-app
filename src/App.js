@@ -12,11 +12,10 @@ function App() {
   
     // Get the account balance
     "function balanceOf(address) view returns (uint)",
-    
-
   ];
 
   const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/1a737ff6f59249a1b280436c5904e123");
+  //const provider = new ethers.providers.JsonRpcProvider("https://broken-palpable-meme.avalanche-testnet.discover.quiknode.pro/ba253b1c0b5b07525b0e81e8d2c56db4130245a1/");
 
   let contract = null;
   let contractAddress = "";
@@ -27,7 +26,7 @@ function App() {
   async function addContract(){
 
     contractAddress = document.getElementById("contractAddress").value;
-    //const accounts = provider.listAccounts();
+
     contract = new ethers.Contract(contractAddress, abi, provider);
 
     let tokenName = await contract.name();
@@ -41,9 +40,10 @@ function App() {
     users[arrayLength] = userAddress;
 
     let num = await contract.balanceOf(userAddress);
-    let balance = ethers.utils.formatEther(num) * 1000000000000;
+    let balance = ethers.utils.formatEther(num);
 
-    let allowance = await contract.allowance(contractAddress, userAddress);
+    let allowance = await contract.allowance(userAddress, contractAddress); //assume allowance isnt right
+                                                                            // fix l8er
 
     var table = document.getElementById("usersTable");
 
