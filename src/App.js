@@ -14,11 +14,12 @@ function App() {
     "function balanceOf(address) view returns (uint)",
   ];
 
-  const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/1a737ff6f59249a1b280436c5904e123");
-  //const provider = new ethers.providers.JsonRpcProvider("https://broken-palpable-meme.avalanche-testnet.discover.quiknode.pro/ba253b1c0b5b07525b0e81e8d2c56db4130245a1/");
+  //const provider = new ethers.providers.JsonRpcProvider("https://mainnet.infura.io/v3/1a737ff6f59249a1b280436c5904e123");
+  const provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/polygon");
 
   let contract = null;
-  let contractAddress = "";
+  let contractAddress = ""; // create contract, current DAI Stable coin address
+  let allowanceSpenderAddress = "0x168a5d1217AEcd258b03018d5bF1A1677A07b733"; //for long short, denham explain
 
   const users = [];
   let arrayLength = 0;
@@ -40,10 +41,12 @@ function App() {
     users[arrayLength] = userAddress;
 
     let num = await contract.balanceOf(userAddress);
-    let balance = ethers.utils.formatEther(num);
+    let balance = parseFloat(ethers.utils.formatEther(num));
+    balance = balance.toFixed(2);
 
-    let allowance = await contract.allowance(userAddress, contractAddress); //assume allowance isnt right
-                                                                            // fix l8er
+    let allowance = await contract.allowance(userAddress, "0x168a5d1217AEcd258b03018d5bF1A1677A07b733");
+    allowance = allowance / 10**18;
+    allowance = allowance.toFixed(2);
 
     var table = document.getElementById("usersTable");
 
@@ -55,7 +58,7 @@ function App() {
     var cell3 = row.insertCell(2);
     cell1.innerHTML = userAddress;
     cell2.innerHTML = "$" + balance;
-    cell3.innerHTML = allowance;
+    cell3.innerHTML = "$" + allowance;
 
     arrayLength = arrayLength + 1;
   }
@@ -64,7 +67,7 @@ function App() {
     <div className="App">
       <h1>VaR App</h1>
       <pre>
-        Contract Address: <input type="text" id="contractAddress"/>
+        Contract Address: <input id="contractAddress"/>
         <button onClick={() => addContract()}>Submit</button>
       </pre>
       <pre>
