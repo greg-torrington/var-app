@@ -1,6 +1,5 @@
-import logo from './logo.svg';
-import './App.css';
 import { Contract, ethers } from 'ethers';
+import './App.css';
 
 function App() {
 
@@ -8,6 +7,8 @@ function App() {
     // Some details about the token
     "function name() view returns (string)",
     "function symbol() view returns (string)",
+
+    // Get allowance of token holder
     "function allowance(address owner, address spender) external view returns (uint256)",
   
     // Get the account balance
@@ -20,17 +21,19 @@ function App() {
   var erc20 = null;
   var spenderAddress = null;
 
-  var preEndPoint = null;
-  var preERC20 = null;
-  var preSpender = null;
-  var preUsers = null;
   var preVaR =  null;
+
+  var td2Endpoint = null;
+  var td2ERC20 = null;
+  var td2Spender = null;
+  var td2Users = null;
+  var td2VaR = null;
 
   async function connectToDefaultEndPoint(){
 
     var endPoint = document.getElementById("defaultendpoints").value;
 
-    preEndPoint = document.getElementById("pre-endpoint");
+    td2Endpoint = document.getElementById("td2-endpoint");
 
     if (endPoint!=="Other"){
 
@@ -44,14 +47,20 @@ function App() {
       if(data.error && i==0) {
           var errorLabel = document.createElement("label");
           errorLabel.innerHTML = "Error connecting! :(";
-          preEndPoint.appendChild(errorLabel);
+          td2Endpoint.appendChild(errorLabel);
           i++;
       }
       });
 
       var connectionSuccess = document.createElement("label");
       connectionSuccess.innerHTML = "Connection to network is successful! :D";
-      preEndPoint.appendChild(connectionSuccess);
+      td2Endpoint.appendChild(connectionSuccess);
+
+      var td1Endpoint = document.getElementById("td1-endpoint");
+      var img = document.createElement("img");
+      img.src = "images/one.jpg";
+      img.style.height = "20px";
+      td1Endpoint.appendChild(img);
 
       createERC20TokenInput();
       
@@ -66,8 +75,8 @@ function App() {
       endPointButton.id = "endpointbutton"
       endPointButton.innerHTML = "Submit";
 
-      preEndPoint.appendChild(endPointInput);
-      preEndPoint.appendChild(endPointButton);
+      td2Endpoint.appendChild(endPointInput);
+      td2Endpoint.appendChild(endPointButton);
 
       endPointButton.onclick = function() {connectToNewEndPoint()};
 
@@ -78,6 +87,7 @@ function App() {
   async function connectToNewEndPoint(){
 
     var endPoint = document.getElementById("endpointtext").value;
+    console.log(endPoint);
     provider = new ethers.providers.JsonRpcProvider(endPoint);
 
     document.getElementById("endpointlabel").hidden = true;
@@ -89,7 +99,7 @@ function App() {
       if(data.error && i==0) {
           var errorLabel = document.createElement("label");
           errorLabel.innerHTML = "Error connecting! :(";
-          preEndPoint.appendChild(errorLabel);
+          td2Endpoint.appendChild(errorLabel);
           i++;
       }
     });
@@ -97,7 +107,13 @@ function App() {
     var connectionSuccess = document.createElement("label");
     connectionSuccess.id = "connection-success-endpoint";
     connectionSuccess.innerHTML = "Connection to network is successful! :D";
-    preEndPoint.appendChild(connectionSuccess);
+    td2Endpoint.appendChild(connectionSuccess);
+
+    var td1Endpoint = document.getElementById("td1-endpoint");
+    var img = document.createElement("img");
+    img.src = "images/one.jpg";
+    img.style.height = "20px";
+    td1Endpoint.appendChild(img);
 
     createERC20TokenInput();
 
@@ -115,10 +131,10 @@ function App() {
     erc20button.id = "erc20button";
     erc20button.innerHTML = "submit";
 
-    preERC20 = document.getElementById("pre-erc20");
-    preERC20.appendChild(erc20Label);
-    preERC20.appendChild(erc20Input);
-    preERC20.appendChild(erc20button);
+    td2ERC20 = document.getElementById("td2-erc20");
+    td2ERC20.appendChild(erc20Label);
+    td2ERC20.appendChild(erc20Input);
+    td2ERC20.appendChild(erc20button);
 
     erc20button.onclick = function() {createERC20Contract()};
 
@@ -138,7 +154,13 @@ function App() {
     var connectionSuccess = document.createElement("label");
     connectionSuccess.id = "connection-success-erc20"
     connectionSuccess.innerHTML = "ERC20 Contract, " + erc20Name + ", created! :D";
-    preERC20.appendChild(connectionSuccess);
+    td2ERC20.appendChild(connectionSuccess);
+
+    var td1ERC20 = document.getElementById("td1-erc20");
+    var img = document.createElement("img");
+    img.src = "images/two.jpg";
+    img.style.height = "20px";
+    td1ERC20.appendChild(img);
 
     createSpenderInput();
 
@@ -156,10 +178,10 @@ function App() {
     spenderButton.id = "spenderbutton";
     spenderButton.innerHTML = "Submit";
 
-    preSpender = document.getElementById("pre-Spender");
-    preSpender.appendChild(spenderLabel);
-    preSpender.appendChild(spenderText);
-    preSpender.appendChild(spenderButton);
+    td2Spender = document.getElementById("td2-spender");
+    td2Spender.appendChild(spenderLabel);
+    td2Spender.appendChild(spenderText);
+    td2Spender.appendChild(spenderButton);
 
     spenderButton.onclick = function() { recordSpenderAddress() };
 
@@ -177,7 +199,13 @@ function App() {
     recordSuccess.id = "record-success-spender";
     recordSuccess.innerHTML = "Application (Spender) address, " + spenderAddress + ", recorded!"
 
-    preSpender.appendChild(recordSuccess);
+    td2Spender.appendChild(recordSuccess);
+
+    var td1Spender = document.getElementById("td1-spender");
+    var img = document.createElement("img");
+    img.src = "images/three.png";
+    img.style.height = "20px";
+    td1Spender.appendChild(img);
 
     createUsersInput();
 
@@ -195,10 +223,10 @@ function App() {
     usersButtton.type = "button";
     usersButtton.innerHTML = "Submit";
 
-    preUsers = document.getElementById("pre-Users");
-    preUsers.appendChild(usersLabel);
-    preUsers.appendChild(usersText);
-    preUsers.appendChild(usersButtton);
+    td2Users = document.getElementById("td2-users");
+    td2Users.appendChild(usersLabel);
+    td2Users.appendChild(usersText);
+    td2Users.appendChild(usersButtton);
 
     usersButtton.onclick = function() { recordUsers() };
 
@@ -215,9 +243,15 @@ function App() {
 
     var recordSuccess = document.createElement("label");
     recordSuccess.id = "record-success-users";
-    recordSuccess.innerHTML = "All token holder addresses recorded!";
+    recordSuccess.innerHTML = "All, " + usersArray.length + ", token holder addresses recorded!";
 
-    preUsers.appendChild(recordSuccess);
+    td2Users.appendChild(recordSuccess);
+
+    var td1Users = document.getElementById("td1-users");
+    var img = document.createElement("img");
+    img.src = "images/four.jpg";
+    img.style.height = "20px";
+    td1Users.appendChild(img);
 
     createVaRButton();
 
@@ -230,84 +264,110 @@ function App() {
     varButton.type = "button";
     varButton.innerHTML = "Calculate VaR";
 
-    preVaR = document.getElementById("pre-VaR");
-    preVaR.appendChild(varButton);
+    td2VaR = document.getElementById("td2-var");
+    td2VaR.appendChild(varButton);
 
     varButton.onclick = function () {calculateVaR()};
 
   }
 
   async function calculateVaR(){
-    console.log("var shall be done tomorrow!");
+
+    var approvalAdjustedVaR = 0;
+    for (var i=0; i<usersArray.length; i++){
+
+      var tokenHolderAddress = usersArray[i];
+
+      var balance = await erc20.balanceOf(tokenHolderAddress);
+      balance = parseFloat(ethers.utils.formatEther(balance));
+      var allowance = await erc20.allowance(tokenHolderAddress, spenderAddress);
+      allowance = allowance / 10**18;
+
+      if (balance>=allowance){
+        approvalAdjustedVaR += allowance;
+        //console.log(allowance);
+      } else {
+        approvalAdjustedVaR += balance;
+        //console.log(balance);
+      }
+
+    }
+
+    var TVL = await erc20.balanceOf(spenderAddress);
+    TVL = parseFloat(ethers.utils.formatEther(TVL));
+    approvalAdjustedVaR += TVL;
+
+    approvalAdjustedVaR = approvalAdjustedVaR.toFixed(2);
+
+    document.getElementById("varbutton").hidden = true;
+
+    var approvalAdjustedVaRLabel = document.createElement("label");
+    approvalAdjustedVaRLabel.id = "approval-adjusted-var-label";
+    approvalAdjustedVaRLabel.innerHTML = "Approval adjusted VaR calculated to be: $" + approvalAdjustedVaR;
+    
+    var td1VaR = document.getElementById("td1-var");
+    var img = document.createElement("img");
+    img.src = "images/five.png";
+    img.style.height = "20px";
+    td1VaR.appendChild(img);
+    
+    td2VaR.appendChild(approvalAdjustedVaRLabel);
+
   }
-  
-  // async function addContract(){
-
-  //   contractAddress = document.getElementById("contractAddress").value;
-
-  //   erc20 = new ethers.Contract(contractAddress, abi, provider);
-
-  //   let tokenName = await erc20.name();
-  //   document.getElementById('contractName').innerHTML = tokenName;
-
-  // }
-
-  // async function addUser(){
-  //   let userAddress = document.getElementById("userAddress").value;
-  //   document.getElementById("userAddress").value =  "";
-  //   users[arrayLength] = userAddress;
-
-  //   let num = await erc20.balanceOf(userAddress);
-  //   let balance = parseFloat(ethers.utils.formatEther(num));
-  //   balance = balance.toFixed(2);
-
-  //   let allowance = await erc20.allowance(userAddress, allowanceSpenderAddress);
-  //   allowance = allowance / 10**18;
-  //   allowance = allowance.toFixed(2);
-
-  //   var table = document.getElementById("usersTable");
-
-  //   var rows = table.getElementsByTagName("tr").length;
-  //   var row = table.insertRow(rows);
-
-  //   var cell1 = row.insertCell(0);
-  //   var cell2 = row.insertCell(1);
-  //   var cell3 = row.insertCell(2);
-  //   cell1.innerHTML = userAddress;
-  //   cell2.innerHTML = "$" + balance;
-  //   cell3.innerHTML = "$" + allowance;
-
-  //   arrayLength = arrayLength + 1;
-  // }
 
   return (
     <div className="App">
 
-      <h1>Allowance adjusted VaR calculated by FLOAT</h1>
+      <img src="https://media-float-capital.fra1.cdn.digitaloceanspaces.com/public/img/float-logo-sq-center.svg" width={100} height={100} align='center'/>
 
-      <pre id="pre-endpoint">
-        <label id="endpointlabel">Connect to network:</label>
+      <h1 style={{textAlign : "center"}} className="text-3xl font-bold underline">Allowance adjusted VaR calculated by FLOAT</h1>
 
-        <select name="endpoints" id="defaultendpoints" onChange={() => connectToDefaultEndPoint()}>
-          <option value=""></option>
-          <option value="https://rpc.ankr.com/polygon">Polygon</option>
-          <option value="https://rpc.ankr.com/avalanche">Avalanche</option>
-          <option value="https://rpc.ankr.com/eth">Ethereum</option>
-          <option value="Other">Other</option>
-        </select>
-      </pre>
+      <table id="table" align="center">
+        <tbody>
 
-      <pre id="pre-erc20">
-      </pre>
+        <tr id="tr-endpoint">
 
-      <pre id="pre-Spender">
-      </pre>
+          <td id="td1-endpoint" style={{width: "50px", height: "50px"}}></td>
+          <td id="td2-endpoint" style={{width: "500px", height: "50px"}}>
+            <label id="endpointlabel">Connect to network:</label>
 
-      <pre id="pre-Users">
-      </pre>
+            <select name="endpoints" id="defaultendpoints" onChange={() => connectToDefaultEndPoint()} style={{width : '200px'}}>
+              <option value=""></option>
+              <option value="https://rpc.ankr.com/polygon">Polygon</option>
+              <option value="https://rpc.ankr.com/avalanche">Avalanche</option>
+              <option value="https://rpc.ankr.com/eth">Ethereum</option>
+              <option value="Other">Other</option>
+            </select>
+          </td>
+          <td></td>
+        </tr>
 
-      <pre id="pre-VaR">
-      </pre>
+        <tr id="tr-erc20">
+          <td id="td1-erc20" style={{width: "50px", height: "50px"}}></td>
+          <td id="td2-erc20" style={{width: "500px", height: "50px"}}></td>
+          <td></td>
+        </tr>
+
+        <tr id="tr-spender">
+          <td id="td1-spender" style={{width: "50px", height: "50px"}}></td>
+          <td id="td2-spender" style={{width: "500px", height: "50px"}}></td>
+          <td></td>
+        </tr>
+
+        <tr id="tr-users">
+          <td id="td1-users" style={{width: "50px", height: "50px"}}></td>
+          <td id="td2-users" style={{width: "500px", height: "50px"}}></td>
+          <td></td>
+        </tr>
+
+        <tr id="tr-var">
+          <td id="td1-var" style={{width: "50px", height: "50px"}}></td>
+          <td id="td2-var" style={{width: "500px", height: "50px"}}></td>
+          <td></td>
+        </tr>
+
+      </tbody>
+      </table>
 
     </div>
   );
