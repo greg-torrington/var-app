@@ -25,11 +25,6 @@ function App() {
   // selected from select box.
   var endpointInputTextFieldDisplayed = false;
 
-  // Value determining what input options are show for the user addresses,
-  // value will be "CSV" if user wants to input a csv file or "COMMA" if user wants
-  // to enter addresses as comma seperated list, else "noneSelected".
-  var userAddressInputType = "noneSelected";
-
   // Used to see if csv file has been created.
   var csvFile = null;
 
@@ -63,38 +58,12 @@ function App() {
 
         if (await checkSpenderAddressInput()){
 
-          if (userAddressInputType==="noneSelected"){
-
-            if (document.getElementById("useroptions-p").offsetParent!=null){
-
-              document.getElementById("useroptions-p").className = "hidden";
-
-            }
-
-          } else if (userAddressInputType==="CSV"){
-
-            if (document.getElementById("csv-p").offsetParent!=null){
-
-              document.getElementById("csv-p").className = "hidden";
-
-            }
-
-          } else if (userAddressInputType==="COMMA"){
-
-            if (document.getElementById("commainput-p").offsetParent!=null){
-
-              document.getElementById("commainput-p").className = "hidden";
-
-            }
-
-          }
-
-          if (userAddressInputType==="noneSelected"){
+          if (document.getElementById("usersoption-div")!=null){
 
             var tag = document.getElementById("useroptions-p");
             tag.className = "text-red-500 text-xs italic";
 
-          } else if (userAddressInputType==="CSV"){
+          } else if (document.getElementById("csvfile-div").offsetParent!=null){
 
             if (csvFile==null){
 
@@ -103,6 +72,7 @@ function App() {
   
             } else {
 
+              document.getElementById("csv-p").className = "hidden";
               calculateVaRAsCSV();
 
             }
@@ -118,6 +88,7 @@ function App() {
             } else {
 
               document.getElementById("usersaddresses-input").className = "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500";
+              document.getElementById("commainput-p").className = "hidden";
               calculateVaRAsCommaSeperatedList();
 
             }
@@ -392,8 +363,6 @@ function App() {
     usersOptionDiv.replaceWith(CSVFileDiv);
     CSVFileDiv.className = "w-full px-3 visible";
 
-    userAddressInputType = "CSV";
-
   }
 
   // Replaces the two options to input user addresses with a input text field
@@ -404,8 +373,6 @@ function App() {
 
     usersOptionDiv.replaceWith(commaListDiv);
     commaListDiv.className = "w-full px-3 visible";
-
-    userAddressInputType = "COMMA";
 
   }
 
@@ -429,8 +396,7 @@ function App() {
     spenderAddress = null;
 
     csvFile = null;
-
-    userAddressInputType = "noneSelected";
+    
     endpointInputTextFieldDisplayed = false;
 
     userAddresses = [];
