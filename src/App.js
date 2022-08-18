@@ -16,27 +16,48 @@ function App() {
     "function balanceOf(address) view returns (uint)",
   ];
 
+  // First three inputs recorded.
   var provider = null;
   var erc20 = null;
   var spenderAddress = null;
 
+  // Determines if input text field is displayed, this is displayed when "other" 
+  // selected from select box.
+  var endpointInputTextFieldDisplayed = false;
+
+  // Value determining whether the input options are show for the user addresses,
+  // value will be "CSV" if user wants to input a csv file or "COMMA" if user wants
+  // to enter addresses as comma seperated list.
+  var userAddressInputType = "noneSelected";
+
+  // Value determining where to show error message for user address input options.
+  var usersAddressesError = "";
+
+  // Used to see if csv file has been created.
   var csvFile = null;
 
-  var userAddressType = "none";
-  var endpointInputDisplayed = false;
-  var usersSectionError = ""; // either options, csv, or comma
-
+  // Holds the value of the original html screen to the reset button.
   var screenDiv = null;
+
+  // Determines if the table has been created from the "SEE USER LOGS" button, 
+  // if so the value will be false.
   var tableNotCreated = true;
 
+  // Arrays for recording user addresses relevant data.
   var userAddresses = [];
   var userBalances = [];
   var userAllowances = [];
 
-  async function recordScreenDiv(){
+  // Gets original html content for replacement later with "RESET" button.
+  async function recordScreenDiv(){ 
+
     screenDiv = document.getElementById("screen-div").cloneNode( true );
+
   }
 
+  // Each if statment determines if the correct data has been entered for each input field
+  // if not a error message will be displayed under the input field which has the incorrect
+  // data.
   async function submitButtonPressed(){
 
     if (await checkDefaultProviderInput()){
@@ -45,30 +66,36 @@ function App() {
 
         if (await checkSpenderAddressInput()){
 
-          if (usersSectionError==="options" && userAddressType==="none"){
+          if (usersAddressesError==="options" && userAddressInputType==="noneSelected"){
+
             document.getElementById("useroptions-p").className = "hidden";
-            usersSectionError = "";
-          } else if (usersSectionError==="csv" && userAddressType==="CSV"){
+            usersAddressesError = "";
+
+          } else if (usersAddressesError==="csv" && userAddressInputType==="CSV"){
+
             document.getElementById("csv-p").className = "hidden";
-            usersSectionError = "";
-          } else if (usersSectionError==="comma" && userAddressType==="commaInput"){
+            usersAddressesError = "";
+
+          } else if (usersAddressesError==="comma" && userAddressInputType==="COMMA"){
+
             document.getElementById("commainput-p").className = "hidden";
-            usersSectionError = "";
+            usersAddressesError = "";
+
           }
 
-          if (userAddressType==="none"){
+          if (userAddressInputType==="noneSelected"){
 
             var tag = document.getElementById("useroptions-p");
             tag.className = "text-red-500 text-xs italic";
-            usersSectionError = "options"
+            usersAddressesError = "options"
 
-          } else if (userAddressType==="CSV"){
+          } else if (userAddressInputType==="CSV"){
 
             if (csvFile==null){
 
               var tag = document.getElementById("csv-p");
               tag.className = "text-red-500 text-xs italic";
-              usersSectionError = "csv"
+              usersAddressesError = "csv"
   
             } else {
 
@@ -79,13 +106,17 @@ function App() {
           } else {
 
             if (document.getElementById("usersaddresses-input").value===""){
+
               document.getElementById("usersaddresses-input").className = "appearance-none block w-full bg-gray-200 text-gray-700 border border-red-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500";
               var tag = document.getElementById("commainput-p");
               tag.className = "text-red-500 text-xs italic";
-              usersSectionError = "comma"
+              usersAddressesError = "comma"
+
             } else {
+
               document.getElementById("usersaddresses-input").className = "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500";
               calculateVaRAsCommaSeperatedList();
+
             }
 
           }
@@ -98,9 +129,12 @@ function App() {
 
   }
 
+  // Determines what data has been entered for the provider url, if correct it will create
+  // provider and return true. If input entered is wrong it will return false with an error
+  // message.
   async function checkDefaultProviderInput(){
 
-    if (endpointInputDisplayed){
+    if (endpointInputTextFieldDisplayed){
 
       var providerUrl = document.getElementById("defaultendpoint-input").value;
 
@@ -118,8 +152,6 @@ function App() {
         document.getElementById("defaultendpoint-input").className = "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500";
   
         provider = new ethers.providers.JsonRpcProvider(providerUrl);
-        
-        return true;
 
       }
 
@@ -145,13 +177,15 @@ function App() {
 
   }
 
+  // Determines if user has selected the "other" option, if so the select input field
+  // will be replaced with an input text field for the chosen url
   async function createOtherEndpointInput(){
 
     var providerUrl = document.getElementById("defaultendpoint-select").value;
 
     if (providerUrl==="Other"){
 
-      endpointInputDisplayed = true;
+      endpointInputTextFieldDisplayed = true;
 
       var select = document.getElementById("defaultendpoint-select");
 
@@ -170,6 +204,8 @@ function App() {
 
   }
 
+  // Determines if a correct ERC20 address has been entered, return true if so else
+  // return false with error message.
   async function checkERC20Input(){
 
     var erc20Address = document.getElementById("erc20-input").value;
@@ -188,7 +224,6 @@ function App() {
       document.getElementById("erc20-input").className = "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500";
 
       erc20 = new ethers.Contract(erc20Address, abi, provider);
-      console.log(await erc20.name());
 
       return true;
 
@@ -196,6 +231,8 @@ function App() {
 
   }
 
+  // Determines if a correct spender address has been entered, return true if so else
+  // return false with error message.
   async function checkSpenderAddressInput(){
 
     spenderAddress = document.getElementById("spender-input").value;
@@ -218,6 +255,7 @@ function App() {
 
   }
 
+  // Allows user to add csv file to the project.
   async function addFile(){
 
     csvFile = document.getElementById("csvfile");
@@ -233,6 +271,7 @@ function App() {
 
   }
 
+  // Reads the entered CSV file and calculated VaR and records user info
   async function calculateVaRAsCSV(){
     var input = csvFile.files[0];
     var reader = new FileReader();
@@ -281,6 +320,7 @@ function App() {
     reader.readAsText(input);
   }
 
+  // Separates user input into an array and calculates VaR and records user input
   async function calculateVaRAsCommaSeperatedList(){
 
     var list = document.getElementById("usersaddresses-input").value;
@@ -321,6 +361,7 @@ function App() {
 
   }
 
+  // Replaces the two options to input user addresses with an input for the CSV file
   async function openCSVFileDiv(){
     
     var usersOptionDiv = document.getElementById("usersoption-div");
@@ -329,10 +370,11 @@ function App() {
     usersOptionDiv.replaceWith(CSVFileDiv);
     CSVFileDiv.className = "w-full px-3 visible";
 
-    userAddressType = "CSV";
+    userAddressInputType = "CSV";
 
   }
 
+  // Replaces the two options to input user addresses with a input text field
   async function openCommaInputDiv(){
 
     var usersOptionDiv = document.getElementById("usersoption-div");
@@ -341,10 +383,11 @@ function App() {
     usersOptionDiv.replaceWith(commaListDiv);
     commaListDiv.className = "w-full px-3 visible";
 
-    userAddressType = "commaInput";
+    userAddressInputType = "COMMA";
 
   }
 
+  // Sets the page back to its original content when webpage opened
   async function resetForm(){
 
     document.getElementById("screen-div").replaceWith(screenDiv.cloneNode( true ));
@@ -365,9 +408,9 @@ function App() {
 
     csvFile = null;
 
-    userAddressType = "none";
-    endpointInputDisplayed = false;
-    usersSectionError = "";
+    userAddressInputType = "noneSelected";
+    endpointInputTextFieldDisplayed = false;
+    usersAddressesError = "";
 
     userAddresses = [];
     userBalances = [];
@@ -377,6 +420,7 @@ function App() {
 
   }
 
+  // Hides input webpage and displays users address info as a table
   async function displayLogs(){
 
     document.getElementById("table-div").className = "max-w-xl bg-white shadow-md rounded p-4";
@@ -402,6 +446,7 @@ function App() {
 
   }
 
+  // Hides the user address info table and displays the input page with already inputted info
   async function displayVaRApp(){
 
     document.getElementById("table-div").className = "hidden";
