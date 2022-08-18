@@ -263,18 +263,23 @@ function App() {
     csvFile = document.getElementById("csvfile");
 
     if (csvFile.value===""){
+
       var tag = document.createElement("p");
       tag.innerHTML = "No file added.";
       tag.className = "text-red-500 text-xs italic";
       document.getElementById("csvfile-div").appendChild(tag);
+
     } else {
+
       document.getElementById("submitfile-button").className = "visible md:invisible";
+
     }
 
   }
 
   // Reads the entered CSV file and calculated VaR and records user info
   async function calculateVaRAsCSV(){
+
     var input = csvFile.files[0];
     var reader = new FileReader();
 
@@ -305,9 +310,13 @@ function App() {
         userAllowances[i-1] = allowance.toFixed(2);
 
         if (allowance<=balance){
+
           VaRTotal += allowance;
+
         } else {
+
           VaRTotal += balance;
+
         }
 
       }
@@ -349,9 +358,13 @@ function App() {
       userAllowances[i] = allowance.toFixed(2);
 
       if (allowance<=balance){
+
         VaRTotal += allowance;
+
       } else {
+
         VaRTotal += balance;
+
       }
 
     }
@@ -442,6 +455,7 @@ function App() {
                       '<td className="py-4 px-6 border border-slate-300">' + '$' + userAllowances[i] + '</td></tr>';
 
       }
+      
       tableNotCreated = false;
 
     }
