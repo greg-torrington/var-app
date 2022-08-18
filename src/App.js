@@ -1,4 +1,5 @@
 import { Contract, ethers } from 'ethers';
+import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 import './App.css';
 
 function App() {
@@ -26,6 +27,11 @@ function App() {
   var usersSectionError = ""; // either options, csv, or comma
 
   var screenDiv = null;
+  var tableNotCreated = true;
+
+  var userAddresses = [];
+  var userBalances = [];
+  var userAllowances = [];
 
   async function recordScreenDiv(){
     screenDiv = document.getElementById("screen-div").cloneNode( true );
@@ -250,8 +256,12 @@ function App() {
         var balance = await erc20.balanceOf(arrayUsersAddresses[i].trim());
         balance = parseFloat(ethers.utils.formatEther(balance));
         
-        var allowance = erc20.allowance(arrayUsersAddresses[i].trim(), spenderAddress);
+        var allowance = await erc20.allowance(arrayUsersAddresses[i].trim(), spenderAddress);
         allowance = allowance / 10**18;
+
+        userAddresses[i-1] = arrayUsersAddresses[i].trim();
+        userBalances[i-1] = balance.toFixed(2);
+        userAllowances[i-1] = allowance.toFixed(2);
 
         if (allowance<=balance){
           VaRTotal += allowance;
@@ -262,8 +272,9 @@ function App() {
       }
       
       document.getElementById("varcalculated-label").innerHTML = "VaR Calculated: $" + VaRTotal.toFixed(2);
-
       spinner.className = "hidden";
+
+      document.getElementById("showlogs-button").className = "block uppercase cursor-pointer tracking-wide text-green-700 underline text-xs font-bold mb-2";
 
     };
 
@@ -291,6 +302,10 @@ function App() {
       var allowance = await erc20.allowance(arrayUsersAddresses[i], spenderAddress);
       allowance = allowance / 10**18;
 
+      userAddresses[i] = arrayUsersAddresses[i];
+      userBalances[i] = balance.toFixed(2);
+      userAllowances[i] = allowance.toFixed(2);
+
       if (allowance<=balance){
         VaRTotal += allowance;
       } else {
@@ -300,8 +315,9 @@ function App() {
     }
 
     document.getElementById("varcalculated-label").innerHTML = "VaR Calculated: $" + VaRTotal.toFixed(2);
-
     spinner.className = "hidden";
+
+    document.getElementById("showlogs-button").className = "block uppercase cursor-pointer tracking-wide text-green-700 underline text-xs font-bold mb-2";
 
   }
 
@@ -336,6 +352,8 @@ function App() {
     document.getElementById("defaultendpoint-select").onchange = function(){createOtherEndpointInput()};
 
     document.getElementById("reset-button").onclick = function(){resetForm()};
+    document.getElementById("showlogs-button").onclick = function(){displayLogs()};
+    document.getElementById("back-button").onclick = function(){displayVaRApp()};
     document.getElementById("addcsvfile-label").onclick = function(){openCSVFileDiv()};
     document.getElementById("addinput-label").onclick = function(){openCommaInputDiv()};
     document.getElementById("submitfile-button").onclick = function(){addFile()};
@@ -351,6 +369,44 @@ function App() {
     endpointInputDisplayed = false;
     usersSectionError = "";
 
+    userAddresses = [];
+    userBalances = [];
+    userAllowances = [];
+
+    tableNotCreated = true;
+
+  }
+
+  async function displayLogs(){
+
+    document.getElementById("table-div").className = "max-w-xl bg-white shadow-md rounded p-4";
+    document.getElementById("varapp-div").className = "hidden";
+
+    if (tableNotCreated){
+
+      var tableRef = document.getElementById('users-table').getElementsByTagName('tbody')[0];
+
+      for (var i=0; i<userAddresses.length; i++){
+
+      var row = tableRef.insertRow(tableRef.rows.length);
+
+      row.innerHTML = '<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">'+ 
+                      '<td className="py-4 px-6 border border-slate-300">' + userAddresses[i] + '</td>'+
+                      '<td className="py-4 px-6 border border-slate-300">' + '$' + userBalances[i] + '</td>'+
+                      '<td className="py-4 px-6 border border-slate-300">' + '$' + userAllowances[i] + '</td></tr>';
+
+      }
+      tableNotCreated = false;
+
+    }
+
+  }
+
+  async function displayVaRApp(){
+
+    document.getElementById("table-div").className = "hidden";
+    document.getElementById("varapp-div").className = "w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8";
+
   }
 
 
@@ -364,7 +420,7 @@ function App() {
     </h1>
 
     <div id="varapp-div" className="w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8">
-      <div className="flex flex-wrap -mx-3 mb-6">
+      <div id="varcalcone-div" className="flex flex-wrap -mx-3 mb-6">
         <div id="endpoint-div" className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="defaultendpoint-select" id="defaultendpoint-label">
             Select an end point: 
@@ -379,7 +435,7 @@ function App() {
           <p id="endpoint-p" className="hidden" >Please select an endpoint.</p>
         </div>
       </div>
-      <div className="flex flex-wrap -mx-3 mb-6">
+      <div id="varcalctwo-div" className="flex flex-wrap -mx-3 mb-6">
         <div id="erc20-div" className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="erc20-input" id="erc20-label">
             ERC20 Token Address:
@@ -395,7 +451,7 @@ function App() {
           <p id="application-p" className="hidden" >Please enter an application address.</p>
         </div>
       </div>
-      <div className="flex flex-wrap -mx-3 mb-2">
+      <div id="varcalcthree-div" className="flex flex-wrap -mx-3 mb-2">
         <div id="usersoption-div" className="w-full px-3 visible">
           <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="useroptions-pre" id="users-label">
             Choose user addresses input:
@@ -426,13 +482,41 @@ function App() {
           <p id="commainput-p" className="hidden" >Please enter user addresses.</p>
         </div>
       </div>
-      <div className="relative">
+      <div id="showlogs-div" className="relative">
+        <div className="absolute top-0 left-0">
+          <label id="showlogs-button" onClick={() => displayLogs()} className="hidden">
+            SEE USERS LOGS
+          </label>
+        </div>
+      </div>
+      <div id="reset-div" className="relative">
         <div className="absolute top-0 right-0">
           <label id="reset-button" onClick={() => resetForm()} className="block uppercase cursor-pointer tracking-wide text-red-700 underline text-xs font-bold mb-2">
             RESET
           </label>
         </div>
       </div>
+    </div>
+
+    <div id="table-div" className="hidden">
+      <div className="relative h-10 w-10">
+        <div className="absolute left-0 top-0">
+          <label id="back-button" onClick={() => displayVaRApp()} className="block uppercase cursor-pointer tracking-wide text-red-700 underline text-xs font-bold mb-2">
+            BACK
+          </label>
+        </div>
+      </div>
+      <table style={{textAlign: "center"}} id="users-table" className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-collapse border border-slate-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+				    <th className="py-3 px-6 border border-slate-300" scope="col">Addresses</th>
+				    <th scope="col" className="py-3 px-6 border border-slate-300">Balance</th>
+				    <th scope="col" className="py-3 px-6 border border-slate-300">Allowances</th>
+			    </tr>
+        </thead>
+        <tbody className="overflow-y-scroll">
+        </tbody>
+      </table>
     </div>
 
     <button id="calculate-button" className="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => submitButtonPressed()}>
