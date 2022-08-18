@@ -25,12 +25,14 @@ function App() {
   // selected from select box.
   var endpointInputTextFieldDisplayed = false;
 
-  // Value determining whether the input options are show for the user addresses,
+  // Value determining what input options are show for the user addresses,
   // value will be "CSV" if user wants to input a csv file or "COMMA" if user wants
-  // to enter addresses as comma seperated list.
+  // to enter addresses as comma seperated list, else "noneSelected".
   var userAddressInputType = "noneSelected";
 
-  // Value determining where to show error message for user address input options.
+  // Value determining where to show error message for user address input options, 3 types.
+  // Value will be "csv" if no csv file added or submit button selected, "comma" if no values
+  // inputted for comma seperated list input or options if no input type has been selected yet
   var usersAddressesError = "";
 
   // Used to see if csv file has been created.
