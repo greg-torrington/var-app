@@ -30,11 +30,6 @@ function App() {
   // to enter addresses as comma seperated list, else "noneSelected".
   var userAddressInputType = "noneSelected";
 
-  // Value determining where to show error message for user address input options, 3 types.
-  // Value will be "csv" if no csv file added or submit button selected, "comma" if no values
-  // inputted for comma seperated list input or options if no input type has been selected yet
-  var usersAddressesError = "";
-
   // Used to see if csv file has been created.
   var csvFile = null;
 
@@ -68,20 +63,29 @@ function App() {
 
         if (await checkSpenderAddressInput()){
 
-          if (usersAddressesError==="options" && userAddressInputType==="noneSelected"){
+          if (userAddressInputType==="noneSelected"){
 
-            document.getElementById("useroptions-p").className = "hidden";
-            usersAddressesError = "";
+            if (document.getElementById("useroptions-p").offsetParent!=null){
 
-          } else if (usersAddressesError==="csv" && userAddressInputType==="CSV"){
+              document.getElementById("useroptions-p").className = "hidden";
 
-            document.getElementById("csv-p").className = "hidden";
-            usersAddressesError = "";
+            }
 
-          } else if (usersAddressesError==="comma" && userAddressInputType==="COMMA"){
+          } else if (userAddressInputType==="CSV"){
 
-            document.getElementById("commainput-p").className = "hidden";
-            usersAddressesError = "";
+            if (document.getElementById("csv-p").offsetParent!=null){
+
+              document.getElementById("csv-p").className = "hidden";
+
+            }
+
+          } else if (userAddressInputType==="COMMA"){
+
+            if (document.getElementById("commainput-p").offsetParent!=null){
+
+              document.getElementById("commainput-p").className = "hidden";
+
+            }
 
           }
 
@@ -89,7 +93,6 @@ function App() {
 
             var tag = document.getElementById("useroptions-p");
             tag.className = "text-red-500 text-xs italic";
-            usersAddressesError = "options"
 
           } else if (userAddressInputType==="CSV"){
 
@@ -97,7 +100,6 @@ function App() {
 
               var tag = document.getElementById("csv-p");
               tag.className = "text-red-500 text-xs italic";
-              usersAddressesError = "csv"
   
             } else {
 
@@ -112,7 +114,6 @@ function App() {
               document.getElementById("usersaddresses-input").className = "appearance-none block w-full bg-gray-200 text-gray-700 border border-red-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500";
               var tag = document.getElementById("commainput-p");
               tag.className = "text-red-500 text-xs italic";
-              usersAddressesError = "comma"
 
             } else {
 
@@ -259,6 +260,12 @@ function App() {
 
   // Allows user to add csv file to the project.
   async function addFile(){
+
+    if (document.getElementById("csv-p").offsetParent!=null){
+
+      document.getElementById("csv-p").className = "hidden";
+
+    }
 
     csvFile = document.getElementById("csvfile");
 
@@ -425,7 +432,6 @@ function App() {
 
     userAddressInputType = "noneSelected";
     endpointInputTextFieldDisplayed = false;
-    usersAddressesError = "";
 
     userAddresses = [];
     userBalances = [];
@@ -455,7 +461,7 @@ function App() {
                       '<td className="py-4 px-6 border border-slate-300">' + '$' + userAllowances[i] + '</td></tr>';
 
       }
-      
+
       tableNotCreated = false;
 
     }
