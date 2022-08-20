@@ -7,9 +7,10 @@ list. The VaR is then calcualted.
 
 # Built with
 This application was built with by the following features:
-    - react
-    - tailwind
-    - ethers js
+
+    1.  react
+    2.  tailwind
+    3.  ethers js
 
 # Run the app
     1. Clone the repo (will need npm, ethers js, craco installed locally/globally):
@@ -47,6 +48,8 @@ Below will be a step by step on how to use the application to its full potential
 
 # Further work
 Further work to be done:
-    - error catch statements for when the user enters an incorrect address or node url.
-    - allow better structure in the UI for less moving around when switching between
-      table, explainer tool and input page.
+
+    1.  Error catch statements for when the user enters an incorrect address or node url.
+    
+    2.  Allow better structure in the UI for less moving around when switching between
+        table, explainer tool and input page.
