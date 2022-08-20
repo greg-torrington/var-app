@@ -254,6 +254,28 @@ function App() {
     }
 
   }
+  
+  // Replaces the two options to input user addresses with an input for the CSV file
+  async function openCSVFileDiv(){
+    
+    var usersOptionDiv = document.getElementById("usersoption-div");
+    var CSVFileDiv = document.getElementById("csvfile-div");
+
+    usersOptionDiv.replaceWith(CSVFileDiv);
+    CSVFileDiv.className = "w-full px-3 visible";
+
+  }
+
+  // Replaces the two options to input user addresses with a input text field
+  async function openCommaInputDiv(){
+
+    var usersOptionDiv = document.getElementById("usersoption-div");
+    var commaListDiv = document.getElementById("commainput-div");
+
+    usersOptionDiv.replaceWith(commaListDiv);
+    commaListDiv.className = "w-full px-3 visible";
+
+  }
 
   // Reads the entered CSV file and calculated VaR and records user info
   async function calculateVaRAsCSV(){
@@ -354,29 +376,58 @@ function App() {
 
   }
 
-  // Replaces the two options to input user addresses with an input for the CSV file
-  async function openCSVFileDiv(){
-    
-    var usersOptionDiv = document.getElementById("usersoption-div");
-    var CSVFileDiv = document.getElementById("csvfile-div");
+  // Hides input webpage and displays users address info as a table
+  async function displayLogs(){
 
-    usersOptionDiv.replaceWith(CSVFileDiv);
-    CSVFileDiv.className = "w-full px-3 visible";
+    document.getElementById("table-div").className = "max-w-xl bg-white shadow-md rounded p-4";
+    document.getElementById("varapp-div").className = "hidden";
+  
+    if (tableNotCreated){
+  
+      var tableRef = document.getElementById('users-table').getElementsByTagName('tbody')[0];
+  
+      for (var i=0; i<userAddresses.length; i++){
+  
+      var row = tableRef.insertRow(tableRef.rows.length);
+  
+      row.innerHTML = '<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">'+ 
+                      '<td className="py-4 px-6 border border-slate-300">' + userAddresses[i] + '</td>'+
+                      '<td className="py-4 px-6 border border-slate-300">' + '$' + userBalances[i] + '</td>'+
+                      '<td className="py-4 px-6 border border-slate-300">' + '$' + userAllowances[i] + '</td></tr>';
+  
+      }
+  
+      tableNotCreated = false;
+  
+    }
+  
+  }
+  
+  // Hides the user address info table and displays the input page with already inputted info
+  async function displayVaRApp(){
+
+    if (document.getElementById("table-div").offsetParent!=null){
+      document.getElementById("table-div").className = "hidden";
+    } else {
+      document.getElementById("explainer-div").className = "hidden";
+    }
+
+    document.getElementById("varapp-div").className = "max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8";
+  
+  }
+
+  // Displays explainer tool and hides previous webpage
+  async function displayExplainerDiv(){
+
+    var width = document.getElementById("varapp-div").offsetWidth;
+    var height = document.getElementById("varapp-div").offsetHeight;
+
+    document.getElementById("varapp-div").className = "hidden";
+    document.getElementById("explainer-div").className = "overflow-y-auto bg-white shadow-md rounded px-8 pt-6 pb-8 w-96 h-96";
 
   }
 
-  // Replaces the two options to input user addresses with a input text field
-  async function openCommaInputDiv(){
-
-    var usersOptionDiv = document.getElementById("usersoption-div");
-    var commaListDiv = document.getElementById("commainput-div");
-
-    usersOptionDiv.replaceWith(commaListDiv);
-    commaListDiv.className = "w-full px-3 visible";
-
-  }
-
-  // Sets the page back to its original content when webpage opened
+  // Sets the input page back to its original content when webpage opened
   async function resetForm(){
 
     document.getElementById("screen-div").replaceWith(screenDiv.cloneNode( true ));
@@ -385,10 +436,12 @@ function App() {
 
     document.getElementById("reset-button").onclick = function(){resetForm()};
     document.getElementById("showlogs-button").onclick = function(){displayLogs()};
-    document.getElementById("back-button").onclick = function(){displayVaRApp()};
+    document.getElementById("oneback-button").onclick = function(){displayVaRApp()};
+    document.getElementById("twoback-button").onclick = function(){displayVaRApp()};
     document.getElementById("addcsvfile-label").onclick = function(){openCSVFileDiv()};
     document.getElementById("addinput-label").onclick = function(){openCommaInputDiv()};
     document.getElementById("submitfile-button").onclick = function(){addFile()};
+    document.getElementById("help-button").onclick = function(){displayExplainerDiv()};
     document.getElementById("calculate-button").onclick = function(){submitButtonPressed()};
 
     provider = null;
@@ -407,42 +460,6 @@ function App() {
 
   }
 
-  // Hides input webpage and displays users address info as a table
-  async function displayLogs(){
-
-    document.getElementById("table-div").className = "max-w-xl bg-white shadow-md rounded p-4";
-    document.getElementById("varapp-div").className = "hidden";
-
-    if (tableNotCreated){
-
-      var tableRef = document.getElementById('users-table').getElementsByTagName('tbody')[0];
-
-      for (var i=0; i<userAddresses.length; i++){
-
-      var row = tableRef.insertRow(tableRef.rows.length);
-
-      row.innerHTML = '<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">'+ 
-                      '<td className="py-4 px-6 border border-slate-300">' + userAddresses[i] + '</td>'+
-                      '<td className="py-4 px-6 border border-slate-300">' + '$' + userBalances[i] + '</td>'+
-                      '<td className="py-4 px-6 border border-slate-300">' + '$' + userAllowances[i] + '</td></tr>';
-
-      }
-
-      tableNotCreated = false;
-
-    }
-
-  }
-
-  // Hides the user address info table and displays the input page with already inputted info
-  async function displayVaRApp(){
-
-    document.getElementById("table-div").className = "hidden";
-    document.getElementById("varapp-div").className = "w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8";
-
-  }
-
-
   return (
     <div id="screen-div" className="grid h-screen place-items-center" onLoad={() => recordScreenDiv()}>
 
@@ -452,9 +469,14 @@ function App() {
       VaR Calculated: $0
     </h1>
 
-    <div id="varapp-div" className="w-full max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8">
-      <div id="varcalcone-div" className="flex flex-wrap -mx-3 mb-6">
-        <div id="endpoint-div" className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+    <div id="varapp-div" className="max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8">
+      <div className="relative h-5">
+        <button onClick={() => displayExplainerDiv()} id="help-button" className="absolute top-0 right-0 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+          ?
+        </button>
+      </div>
+      <div id="varcalcone-div" className="flex flex-wrap -mx-3 mb-6 pt-2">
+        <div id="endpoint-div" className="w-full px-3 mb-6 md:mb-0">
           <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="defaultendpoint-select" id="defaultendpoint-label">
             Select an end point: 
           </label>
@@ -534,7 +556,7 @@ function App() {
     <div id="table-div" className="hidden">
       <div className="relative h-10 w-10">
         <div className="absolute left-0 top-0">
-          <label id="back-button" onClick={() => displayVaRApp()} className="block uppercase cursor-pointer tracking-wide text-red-700 underline text-xs font-bold mb-2">
+          <label id="oneback-button" onClick={() => displayVaRApp()} className="block uppercase cursor-pointer tracking-wide text-red-700 underline text-xs font-bold mb-2">
             BACK
           </label>
         </div>
@@ -550,6 +572,100 @@ function App() {
         <tbody className="overflow-y-scroll">
         </tbody>
       </table>
+    </div>
+
+    <div id="explainer-div" className="hidden">
+      <div className="relative h-6">
+        <div className="absolute left-0 top-0">
+          <label id="twoback-button" onClick={() => displayVaRApp()} className="block uppercase cursor-pointer tracking-wide text-red-700 underline text-xs font-bold mb-2">
+            BACK
+          </label>
+        </div>
+      </div>
+      <div>
+        <h1 className="text-center font-bold text-2xl pt-4 pb-4">
+          Using the VaR App
+        </h1>
+      </div>
+      <div>
+        <div id="step1-div">
+          <h1 className="text-center font-bold text-lg">
+            Step 1: The three fields 
+          </h1>
+          <label className="text-sm">
+            1.  Select a network to connect to. If desired network is not present
+                select 'other' and a textfield will appear to enter a url for 
+                the network node that you need.
+            <div className="grid place-items-center border">
+              <label className="font-bold pt-4 text-xs">Netowork nodes to select:</label>
+              <img src="images/select.png" className="w-25 h-20"></img>
+              <label className="font-bold pt-4 text-xs">Field displayed when 'other' selected:</label>
+              <img src="images/other.png" className="w-25 h-20"></img>
+            </div>
+            2.  Enter erc20 token address into the bottom left texfield.
+            <div className="grid place-items-center border">
+              <img src="images/bottomleft.png" className="w-25 h-20"></img>
+            </div>
+            3.  Enter contract address into the bottom right textfield. 
+            <div className="grid place-items-center border">
+              <img src="images/bottomright.png" className="w-25 h-20"></img>
+            </div>
+            <br/>
+          </label>
+        </div>
+        <div id="step2-div">
+          <h1 className="text-center font-bold text-lg pt-4">
+            Step 2: The choice 
+          </h1>
+          <label className="text-sm">
+            This section you must enter the user addresses to calculate the VaR.
+            If the addresses are held in a CSV file select the first link and pull
+            the csv file from your library by using the 'Select file' button, else 
+            you will need to enter the addresses as a comma seperated list by 
+            clicking the second link.
+            <div className="grid place-items-center border">
+              <img src="images/choice.png" className="w-25 h-20"></img>
+            </div>
+          </label>
+        </div>
+        <div id="step3-div">
+          <h1 className="text-center font-bold text-lg pt-6">
+            Step 3: The Calculation 
+          </h1>
+          <label className="text-sm">
+            Once you have filled the four inputs with data, select the 
+            'Calculate VaR' button and a spinner will run until calculations 
+            have complete and the amount will be displayed below the FLOAT logo.
+            <div className="grid place-items-center border">
+              <img src="images/calculate.png" className="w-25 h-50"></img>
+            </div>
+          </label>
+        </div>
+        <div id="step3-div">
+          <h1 className="text-center font-bold text-lg pt-6">
+            Step 4: The Extras 
+          </h1>
+          <label className="text-sm">
+            1.  The red 'RESET' label, in the bottom right corner, will set the webpage 
+                back to its original content when loaded, if clicked. 
+            <br/>
+            2.  The green "SHOW USERS LOGS" label switches to a page which displays all the 
+                users addresses that were entered as well as their respected balance 
+                and allowance.
+            <br/>
+            3.  The '?' button in the top right corner is where you are now! We are explaining
+                how to use this app in the most efficient way.
+            <br/>
+            4.  The red "BACK" button is displayed when the Users logs or the help button 
+                is clicked. This will direct you back to the original page when the VaR was
+                calculated.
+            <div className="grid place-items-center border">
+              <img src="images/extras.png" className="w-25 h-40"></img>
+            </div>
+          </label>
+        </div>
+      </div>
+
     </div>
 
     <button id="calculate-button" className="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => submitButtonPressed()}>
