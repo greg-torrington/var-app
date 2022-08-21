@@ -127,6 +127,8 @@ function App() {
   
         provider = new ethers.providers.JsonRpcProvider(providerUrl);
 
+        return true;
+
       }
 
     } else if (document.getElementById("defaultendpoint-select").value==="Select end point") {
@@ -466,7 +468,7 @@ function App() {
   }
 
   return (
-    <div id="screen-div" className="grid h-screen place-items-center" onLoad={() => recordScreenDiv()}>
+  <div id="screen-div" className="grid h-screen place-items-center" onLoad={() => recordScreenDiv()}>
 
     <img src="https://media-float-capital.fra1.cdn.digitaloceanspaces.com/public/img/float-logo-sq-center.svg" width={100} height={100}/>
 
@@ -623,13 +625,16 @@ function App() {
             Step 2: The choice 
           </h1>
           <label className="text-sm">
-            This section you must enter the user addresses to calculate the VaR.
+            In this section you must enter the user addresses to calculate the VaR.
             If the addresses are held in a CSV file select the first link and pull
-            the csv file from your library by using the 'Select file' button, else 
+            the csv file from your library by using the 'Select file' buttom and clicking 'Submit', else 
             you will need to enter the addresses as a comma seperated list by 
-            clicking the second link.
+            clicking the second link, no button is required to submit addresses with the second option.
             <div className="grid place-items-center border">
+              <label className="font-bold pt-4 text-xs">Choosing how to input user addresses:</label>
               <img src="images/choice.png" className="w-25 h-20"></img>
+              <label className="font-bold pt-4 text-xs">Entering data as CSV file:</label>
+              <img src="images/csv.png" className="w-25 h-20"></img>
             </div>
           </label>
         </div>
@@ -654,18 +659,21 @@ function App() {
             1.  The red 'RESET' label, in the bottom right corner, will set the webpage 
                 back to its original content when loaded, if clicked. 
             <br/>
-            2.  The green "SHOW USERS LOGS" label switches to a page which displays all the 
+            2.  The green 'SHOW USERS LOGS' label switches to a page which displays all the 
                 users addresses that were entered as well as their respected balance 
                 and allowance.
             <br/>
             3.  The '?' button in the top right corner is where you are now! We are explaining
                 how to use this app in the most efficient way.
             <br/>
-            4.  The red "BACK" button is displayed when the Users logs or the help button 
+            4.  The red 'BACK' button is displayed when the Users logs or the help button 
                 is clicked. This will direct you back to the original page where the VaR was
                 calculated.
             <div className="grid place-items-center border">
+              <label className="font-bold pt-4 text-xs">'SELECT USERS LOGS', 'RESET' and '?' buttons:</label>
               <img src="images/extras.png" className="w-25 h-40"></img>
+              <label className="font-bold pt-4 text-xs">User addresses table and 'BACK' button:</label>
+              <img src="images/table.png" className="w-25 h-40"></img>
             </div>
           </label>
         </div>
@@ -683,7 +691,7 @@ function App() {
       </div>
     </div>
 
-    </div>
+  </div>
   );
 }
 
