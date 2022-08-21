@@ -40,6 +40,9 @@ function App() {
   var userBalances = [];
   var userAllowances = [];
 
+  // Determines if VaR has been calculated
+  var VaRCalculated = false;
+
   // Gets original html content for replacement later with "RESET" button.
   async function recordScreenDiv(){ 
 
@@ -294,8 +297,7 @@ function App() {
       var spinner = document.getElementById("spinner-div");
 
       spinner.className = "flex justify-center items-center";
-
-      button.replaceWith(spinner);
+      button.className = "hidden";
 
       var text = e.target.result;
       
@@ -328,6 +330,9 @@ function App() {
       
       document.getElementById("varcalculated-label").innerHTML = "VaR Calculated: $" + VaRTotal.toFixed(2);
       spinner.className = "hidden";
+      button.className = "invisible";
+
+      VaRCalculated = true;
 
       document.getElementById("showlogs-button").className = "block uppercase cursor-pointer tracking-wide text-green-700 underline text-xs font-bold mb-2";
 
@@ -346,8 +351,7 @@ function App() {
     var spinner = document.getElementById("spinner-div");
 
     spinner.className = "flex justify-center items-center";
-
-    button.replaceWith(spinner);
+    button.className = "hidden";
 
     var VaRTotal = 0;
     for (var i=0; i<arrayUsersAddresses.length; i++){
@@ -376,6 +380,9 @@ function App() {
 
     document.getElementById("varcalculated-label").innerHTML = "VaR Calculated: $" + VaRTotal.toFixed(2);
     spinner.className = "hidden";
+    button.className = "invisible";
+
+    VaRCalculated = true;
 
     document.getElementById("showlogs-button").className = "block uppercase cursor-pointer tracking-wide text-green-700 underline text-xs font-bold mb-2";
 
@@ -384,8 +391,15 @@ function App() {
   // Hides input webpage and displays users address info as a table
   async function displayLogs(){
 
-    document.getElementById("table-div").className = "overflow-y-auto overflow-x-auto bg-white shadow-md rounded p-4 w-96 h-96";
+    var style = window.getComputedStyle(document.getElementById("varapp-div"));
+    var width = style.getPropertyValue("width");
+    var height = style.getPropertyValue("height");
+  
     document.getElementById("varapp-div").className = "hidden";
+
+    document.getElementById("table-div").className = "overflow-y-auto overflow-x-auto bg-white shadow-md rounded p-4";
+    document.getElementById("table-div").style.width = width;
+    document.getElementById("table-div").style.height = height;
   
     if (tableNotCreated){
   
@@ -411,12 +425,21 @@ function App() {
   // Displays explainer tool and hides previous webpage
   async function displayExplainerDiv(){
 
-    var width = parseInt(document.getElementById("varapp-div").offsetWidth);
-    var height = parseInt(document.getElementById("varapp-div").offsetHeight);
+    var style = window.getComputedStyle(document.getElementById("varapp-div"));
+    var width = style.getPropertyValue("width");
+    var height = style.getPropertyValue("height");
 
     document.getElementById("varapp-div").className = "hidden";
-    document.getElementById("calculate-button").className = "hidden";
-    document.getElementById("explainer-div").className = "overflow-y-auto bg-white shadow-md rounded px-8 pt-6 pb-8 h-96 w-96";
+
+    if (document.getElementById("calculate-button")!=null){
+
+      document.getElementById("calculate-button").className = "invisible";
+
+    }
+
+    document.getElementById("explainer-div").className = "overflow-y-auto bg-white shadow-md rounded px-8 pt-6 pb-8 h-96";
+    document.getElementById("explainer-div").style.width = width;
+    document.getElementById("explainer-div").style.height = height;
 
   }
   
@@ -424,10 +447,19 @@ function App() {
   async function displayVaRApp(){
 
     if (document.getElementById("table-div").offsetParent!=null){
+
       document.getElementById("table-div").className = "hidden";
+
     } else {
+
       document.getElementById("explainer-div").className = "hidden";
-      document.getElementById("calculate-button").className = "bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded";
+
+      if (!VaRCalculated){
+
+        document.getElementById("calculate-button").className = "bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded";
+
+      }
+
     }
 
     document.getElementById("varapp-div").className = "max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8";
@@ -455,15 +487,17 @@ function App() {
     erc20 = null;
     spenderAddress = null;
 
-    csvFile = null;
-    
     endpointInputTextFieldDisplayed = false;
+
+    csvFile = null;
+
+    tableNotCreated = true;
 
     userAddresses = [];
     userBalances = [];
     userAllowances = [];
 
-    tableNotCreated = true;
+    VaRCalculated = false;
 
   }
 
@@ -478,7 +512,7 @@ function App() {
 
     <div id="varapp-div" className="max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8">
       <div className="relative h-5">
-        <button onClick={() => displayExplainerDiv()} id="help-button" className="absolute top-0 right-0 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+        <button onClick={() => displayExplainerDiv()} id="help-button" className="absolute top-0 right-0 font-bold text-gray-900 bg-white border border-gray-900 focus:outline-none hover:bg-gray-300 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-2 py-1 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
           ?
         </button>
       </div>
@@ -627,7 +661,7 @@ function App() {
           <label className="text-sm">
             In this section you must enter the user addresses to calculate the VaR.
             If the addresses are held in a CSV file select the first link and pull
-            the csv file from your library by using the 'Select file' buttom and clicking 'Submit', else 
+            the csv file from your library by using the 'Select file' button and clicking 'Submit'. Otherwise 
             you will need to enter the addresses as a comma seperated list by 
             clicking the second link, no button is required to submit addresses with the second option.
             <div className="grid place-items-center border">
@@ -643,9 +677,9 @@ function App() {
             Step 3: The Calculation 
           </h1>
           <label className="text-sm">
-            Once you have filled the four inputs with data, select the 
+            Once you have filled the four chosen inputs with data, select the 
             'Calculate VaR' button and a spinner will run until calculations 
-            have complete and the amount will be displayed below the FLOAT logo.
+            have completed, the VaR amount will be displayed below the FLOAT logo.
             <div className="grid place-items-center border">
               <img src="images/calculate.png" className="w-25 h-50"></img>
             </div>
@@ -657,7 +691,7 @@ function App() {
           </h1>
           <label className="text-sm">
             1.  The red 'RESET' label, in the bottom right corner, will set the webpage 
-                back to its original content when loaded, if clicked. 
+                back to its original content when loaded. 
             <br/>
             2.  The green 'SHOW USERS LOGS' label switches to a page which displays all the 
                 users addresses that were entered as well as their respected balance 
@@ -666,8 +700,8 @@ function App() {
             3.  The '?' button in the top right corner is where you are now! We are explaining
                 how to use this app in the most efficient way.
             <br/>
-            4.  The red 'BACK' button is displayed when the Users logs or the help button 
-                is clicked. This will direct you back to the original page where the VaR was
+            4.  The red 'BACK' label is displayed when the 'SHOW USERS LOGS' label or the '?' button 
+                is selected. This will direct you back to the original page where the VaR was
                 calculated.
             <div className="grid place-items-center border">
               <label className="font-bold pt-4 text-xs">'SELECT USERS LOGS', 'RESET' and '?' buttons:</label>
