@@ -16,19 +16,19 @@ function App() {
     "function balanceOf(address) view returns (uint)",
   ];
 
-  // First three inputs recorded.
+  // For the first three inputs recorded.
   var provider = null;
   var erc20 = null;
   var spenderAddress = null;
 
-  // Determines if input text field is displayed, this is displayed when "other" 
+  // Determines if input text field is displayed, this text field is displayed when "other" 
   // selected from select box.
   var endpointInputTextFieldDisplayed = false;
 
-  // Used to see if csv file has been created.
+  // Used to determine if csv file has been created.
   var csvFile = null;
 
-  // Holds the value of the original html screen to the reset button.
+  // Holds the value of the original html screen for the reset button.
   var screenDiv = null;
 
   // Determines if the table has been created from the "SEE USER LOGS" button, 
@@ -145,6 +145,7 @@ function App() {
       document.getElementById("defaultendpoint-select").className = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
       
       provider = new ethers.providers.JsonRpcProvider(providerUrl);
+
       return true;
 
     }
@@ -262,6 +263,7 @@ function App() {
     var CSVFileDiv = document.getElementById("csvfile-div");
 
     usersOptionDiv.replaceWith(CSVFileDiv);
+
     CSVFileDiv.className = "w-full px-3 visible";
 
   }
@@ -273,6 +275,7 @@ function App() {
     var commaListDiv = document.getElementById("commainput-div");
 
     usersOptionDiv.replaceWith(commaListDiv);
+
     commaListDiv.className = "w-full px-3 visible";
 
   }
