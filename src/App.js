@@ -379,7 +379,7 @@ function App() {
   // Hides input webpage and displays users address info as a table
   async function displayLogs(){
 
-    document.getElementById("table-div").className = "max-w-xl bg-white shadow-md rounded p-4";
+    document.getElementById("table-div").className = "overflow-y-auto overflow-x-auto bg-white shadow-md rounded p-4 w-96 h-96";
     document.getElementById("varapp-div").className = "hidden";
   
     if (tableNotCreated){
@@ -419,8 +419,8 @@ function App() {
   // Displays explainer tool and hides previous webpage
   async function displayExplainerDiv(){
 
-    var width = document.getElementById("varapp-div").offsetWidth;
-    var height = document.getElementById("varapp-div").offsetHeight;
+    //var width = document.getElementById("varapp-div").offsetWidth;
+    //var height = document.getElementById("varapp-div").offsetHeight;
 
     document.getElementById("varapp-div").className = "hidden";
     document.getElementById("explainer-div").className = "overflow-y-auto bg-white shadow-md rounded px-8 pt-6 pb-8 w-96 h-96";
