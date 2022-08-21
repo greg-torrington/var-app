@@ -402,6 +402,18 @@ function App() {
     }
   
   }
+
+  // Displays explainer tool and hides previous webpage
+  async function displayExplainerDiv(){
+
+    var width = parseInt(document.getElementById("varapp-div").offsetWidth);
+    var height = parseInt(document.getElementById("varapp-div").offsetHeight);
+
+    document.getElementById("varapp-div").className = "hidden";
+    document.getElementById("calculate-button").className = "hidden";
+    document.getElementById("explainer-div").className = "overflow-y-auto bg-white shadow-md rounded px-8 pt-6 pb-8 h-96 w-96";
+
+  }
   
   // Hides the user address info table and displays the input page with already inputted info
   async function displayVaRApp(){
@@ -410,21 +422,11 @@ function App() {
       document.getElementById("table-div").className = "hidden";
     } else {
       document.getElementById("explainer-div").className = "hidden";
+      document.getElementById("calculate-button").className = "bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded";
     }
 
     document.getElementById("varapp-div").className = "max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8";
   
-  }
-
-  // Displays explainer tool and hides previous webpage
-  async function displayExplainerDiv(){
-
-    //var width = document.getElementById("varapp-div").offsetWidth;
-    //var height = document.getElementById("varapp-div").offsetHeight;
-
-    document.getElementById("varapp-div").className = "hidden";
-    document.getElementById("explainer-div").className = "overflow-y-auto bg-white shadow-md rounded px-8 pt-6 pb-8 w-96 h-96";
-
   }
 
   // Sets the input page back to its original content when webpage opened
@@ -599,7 +601,7 @@ function App() {
             <div className="grid place-items-center border">
               <label className="font-bold pt-4 text-xs">Netowork nodes to select:</label>
               <img src="images/select.png" className="w-25 h-20"></img>
-              <label className="font-bold pt-4 text-xs">Field displayed when 'other' selected:</label>
+              <label className="font-bold pt-6 text-xs">Field displayed when 'other' selected:</label>
               <img src="images/other.png" className="w-25 h-20"></img>
             </div>
             2.  Enter erc20 token address into the bottom left texfield.
@@ -657,7 +659,7 @@ function App() {
                 how to use this app in the most efficient way.
             <br/>
             4.  The red "BACK" button is displayed when the Users logs or the help button 
-                is clicked. This will direct you back to the original page when the VaR was
+                is clicked. This will direct you back to the original page where the VaR was
                 calculated.
             <div className="grid place-items-center border">
               <img src="images/extras.png" className="w-25 h-40"></img>
