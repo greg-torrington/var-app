@@ -61,7 +61,7 @@ function App() {
 
         if (await checkSpenderAddressInput()){
 
-          if (document.getElementById("usersoption-div")!=null){
+          if (document.getElementById("usersoption-div").offsetParent!=null){
 
             var tag = document.getElementById("useroptions-p");
             tag.className = "text-red-500 text-xs italic";
@@ -168,20 +168,39 @@ function App() {
       endpointInputTextFieldDisplayed = true;
 
       document.getElementById("selectendpoint-div").className = "hidden";
+
       document.getElementById("inputendpoint-div").className = "w-full px-3 mb-6 md:mb-0";
+      document.getElementById("selectback-label").innerHTML = "<--";
+
+      if (document.getElementById("inputendpoint-p").offsetParent!=null){
+
+        document.getElementById("inputendpoint-p").className = "hidden";
+        document.getElementById("defaultendpoint-input").className = "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500";
+  
+      }
 
     }
 
   }
 
   // Changes back to select input
-  // async function switchBackToSelect(){
+  async function switchBackToSelect(){
+    
+    endpointInputTextFieldDisplayed = false;
 
-  //   endpointInputTextFieldDisplayed = false;
+    document.getElementById("inputendpoint-div").className = "hidden";
+    document.getElementById("selectendpoint-div").className = "w-full px-3 mb-6 md:mb-0";
 
-  //   document.getElementById("")
+    if (document.getElementById("selectendpoint-p").offsetParent!=null){
 
-  // }
+      document.getElementById("selectendpoint-p").className = "hidden";
+      document.getElementById("defaultendpoint-select").className = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
+
+    }
+
+    document.getElementById("defaultendpoint-select").value = "Select end point";
+
+  }
 
   // Determines if a correct ERC20 address has been entered, return true if so else
   // return false with error message.
@@ -266,9 +285,20 @@ function App() {
     var usersOptionDiv = document.getElementById("usersoption-div");
     var CSVFileDiv = document.getElementById("csvfile-div");
 
-    usersOptionDiv.replaceWith(CSVFileDiv);
+    usersOptionDiv.className = "hidden";
 
-    CSVFileDiv.className = "w-full px-3 visible";
+    document.getElementById("csv-p").className = "hidden";
+
+    if (csvFile!=null){
+
+      document.getElementById("submitfile-button").className = "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow";
+      document.getElementById("csvfile").value = "";
+      csvFile = null;
+
+    }
+
+    document.getElementById("csvback-label").innerHTML = "<--";
+    CSVFileDiv.className = "w-full px-3";
 
   }
 
@@ -278,9 +308,33 @@ function App() {
     var usersOptionDiv = document.getElementById("usersoption-div");
     var commaListDiv = document.getElementById("commainput-div");
 
-    usersOptionDiv.replaceWith(commaListDiv);
+    usersOptionDiv.className = "hidden";
 
-    commaListDiv.className = "w-full px-3 visible";
+    document.getElementById("commainput-p").className = "hidden";
+    document.getElementById("usersaddresses-input").className = "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500";
+
+    document.getElementById("commaback-label").innerHTML = "<--";
+    commaListDiv.className = "w-full px-3";
+
+  }
+
+  // Directs back to the two blue label options, from the input  choice
+  // the user selected.
+  async function switchBackToUserAddressOptions(){
+
+    if (document.getElementById("commainput-div").offsetParent!=null){
+
+      document.getElementById("commainput-div").className = "hidden";
+      document.getElementById("usersaddresses-input").value = "";
+
+    } else {
+
+      document.getElementById("csvfile-div").className = "hidden";
+
+    }
+
+    document.getElementById("useroptions-p").className = "hidden";
+    document.getElementById("usersoption-div").className = "w-full px-3";
 
   }
 
@@ -481,6 +535,9 @@ function App() {
     document.getElementById("submitfile-button").onclick = function(){addFile()};
     document.getElementById("help-button").onclick = function(){displayExplainerDiv()};
     document.getElementById("calculate-button").onclick = function(){submitButtonPressed()};
+    document.getElementById("selectback-label").onclick = function(){switchBackToSelect()};
+    document.getElementById("csvback-label").onclick = function(){switchBackToUserAddressOptions()};
+    document.getElementById("commaback-label").onclick = function(){switchBackToUserAddressOptions()};
 
     provider = null;
     erc20 = null;
@@ -515,7 +572,7 @@ function App() {
           ?
         </button>
       </div>
-      <div id="varcalcone-div" className="flex flex-wrap -mx-3 mb-6 pt-2">
+      <div id="varcalcone-div" className="flex flex-wrap -mx-3 mb-6 pt-4">
         <div id="selectendpoint-div" className="w-full px-3 mb-6 md:mb-0">
           <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="defaultendpoint-select" id="defaultendpoint-label">
             Select an end point: 
@@ -530,14 +587,18 @@ function App() {
           <p id="selectendpoint-p" className="hidden" >Please select an endpoint.</p>
         </div>
         <div id ="inputendpoint-div" className="hidden">
-          <label htmlFor="defaultendpoint-input" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+          <div className="flex" id="selectback-div" htmlFor="inputendpoint-label">
+            <label id="selectback-label" onClick={() => switchBackToSelect()} className="block uppercase cursor-pointer tracking-wide text-red-500 text-xs font-bold mb-2">
+            </label>
+          </div>
+          <label id="inputendpoint-label" htmlFor="defaultendpoint-input" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
             Enter enpoint url:
           </label>
           <input id="defaultendpoint-input" placeholder="https://endpointurl" className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></input>
           <p id="inputendpoint-p" className="hidden" >Please enter an endpoint.</p>
         </div>
       </div>
-      <div id="varcalctwo-div" className="flex flex-wrap -mx-3 mb-6">
+      <div id="varcalctwo-div" className="flex flex-wrap -mx-3 mb-6 pt-4">
         <div id="erc20-div" className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="erc20-input" id="erc20-label">
             ERC20 Token Address:
@@ -553,12 +614,12 @@ function App() {
           <p id="application-p" className="hidden" >Please enter an application address.</p>
         </div>
       </div>
-      <div id="varcalcthree-div" className="flex flex-wrap -mx-3 mb-2">
-        <div id="usersoption-div" className="w-full px-3 visible">
+      <div id="varcalcthree-div" className="flex flex-wrap -mx-3 mb-2 pt-4">
+        <div id="usersoption-div" className="w-full px-3">
           <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="useroptions-pre" id="users-label">
             Choose user addresses input:
           </label>
-          <div id="useroptions-div">
+          <div>
             <div className="flex">
               <label id="addcsvfile-label" onClick={() => openCSVFileDiv()} className="block uppercase cursor-pointer tracking-wide text-blue-700 underline text-xs font-bold mb-2">
                 Add user addresses as csv file.
@@ -573,7 +634,11 @@ function App() {
           </div>
         </div>
         <div id="csvfile-div" className="hidden">
-          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="csvfile" id="users-label">
+          <div className="flex" htmlFor="csvusers-label">
+            <label id="csvback-label" onClick={() => switchBackToUserAddressOptions()} className="block uppercase cursor-pointer tracking-wide text-red-500 text-xs font-bold mb-2">
+            </label>
+          </div>
+          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="csvfile" id="csvusers-label">
             Add CSV file:
           </label>
           <input type="file" id="csvfile" accept=".csv" />
@@ -581,22 +646,24 @@ function App() {
           <p id="csv-p" className="hidden" >Please choose a csv file and click 'Submit'.</p>
         </div>
         <div id="commainput-div" className="hidden">
+          <div className="flex" htmlFor="usersaddresses-label">
+            <label id="commaback-label" onClick={() => switchBackToUserAddressOptions()} className="block uppercase cursor-pointer tracking-wide text-red-500 text-xs font-bold mb-2">
+            </label>
+          </div>
           <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="usersaddresses-input" id="usersaddresses-label">
             Add users addresses as comma seperated list:
           </label>
-          <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="usersaddresses-input" type="text" placeholder="e.g. address1,address2,address3"/>
+          <input id="usersaddresses-input" className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="e.g. address1,address2,address3"/>
           <p id="commainput-p" className="hidden" >Please enter user addresses.</p>
         </div>
       </div>
-      <div id="showlogs-div" className="relative">
-        <div className="absolute left-0">
+      <div id="extras-div" className="relative pt-4">
+        <div className="flex absolute left-0">
           <label id="showlogs-button" onClick={() => displayLogs()} className="hidden">
             SEE USERS LOGS
           </label>
         </div>
-      </div>
-      <div id="reset-div" className="relative">
-        <div className="absolute right-0">
+        <div className="flex absolute right-0">
           <label id="reset-button" onClick={() => resetForm()} className="block uppercase cursor-pointer tracking-wide text-red-700 underline text-xs font-bold mb-2">
             RESET
           </label>
