@@ -118,14 +118,14 @@ function App() {
       if (providerUrl===""){
 
         document.getElementById("defaultendpoint-input").className = "appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500";
-        var tag = document.getElementById("endpoint-p");
+        var tag = document.getElementById("inputendpoint-p");
         tag.className = "text-red-500 text-xs italic";
 
         return false;
 
       } else {
 
-        document.getElementById("endpoint-p").className = "hidden";
+        document.getElementById("inputendpoint-p").className = "hidden";
         document.getElementById("defaultendpoint-input").className = "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500";
   
         provider = new ethers.providers.JsonRpcProvider(providerUrl);
@@ -137,7 +137,7 @@ function App() {
     } else if (document.getElementById("defaultendpoint-select").value==="Select end point") {
 
       document.getElementById("defaultendpoint-select").className = "bg-gray-50 border border-red-500 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
-      var tag = document.getElementById("endpoint-p");
+      var tag = document.getElementById("selectendpoint-p");
       tag.className = "text-red-500 text-xs italic";
 
       return false;
@@ -146,7 +146,7 @@ function App() {
 
       var providerUrl = document.getElementById("defaultendpoint-select").value;
 
-      document.getElementById("endpoint-p").className = "hidden";
+      document.getElementById("selectendpoint-p").className = "hidden";
       document.getElementById("defaultendpoint-select").className = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
       
       provider = new ethers.providers.JsonRpcProvider(providerUrl);
@@ -167,22 +167,21 @@ function App() {
 
       endpointInputTextFieldDisplayed = true;
 
-      var select = document.getElementById("defaultendpoint-select");
-
-      var endpointInput = document.createElement("input");
-      endpointInput.className = "appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500";
-      endpointInput.id = "defaultendpoint-input";
-      endpointInput.placeholder = "https://endpointurl";
-
-      var endpointLabel = document.getElementById("defaultendpoint-label");
-      endpointLabel.htmlFor = "defaultendpoint-input"
-      endpointLabel.innerHTML = "Enter enpoint url:"
-
-      select.replaceWith(endpointInput);
+      document.getElementById("selectendpoint-div").className = "hidden";
+      document.getElementById("inputendpoint-div").className = "w-full px-3 mb-6 md:mb-0";
 
     }
 
   }
+
+  // Changes back to select input
+  // async function switchBackToSelect(){
+
+  //   endpointInputTextFieldDisplayed = false;
+
+  //   document.getElementById("")
+
+  // }
 
   // Determines if a correct ERC20 address has been entered, return true if so else
   // return false with error message.
@@ -517,7 +516,7 @@ function App() {
         </button>
       </div>
       <div id="varcalcone-div" className="flex flex-wrap -mx-3 mb-6 pt-2">
-        <div id="endpoint-div" className="w-full px-3 mb-6 md:mb-0">
+        <div id="selectendpoint-div" className="w-full px-3 mb-6 md:mb-0">
           <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="defaultendpoint-select" id="defaultendpoint-label">
             Select an end point: 
           </label>
@@ -528,7 +527,14 @@ function App() {
             <option value="https://rpc.ankr.com/eth">Ethereum</option>
             <option value="Other">Other</option>
           </select>
-          <p id="endpoint-p" className="hidden" >Please select an endpoint.</p>
+          <p id="selectendpoint-p" className="hidden" >Please select an endpoint.</p>
+        </div>
+        <div id ="inputendpoint-div" className="hidden">
+          <label htmlFor="defaultendpoint-input" className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+            Enter enpoint url:
+          </label>
+          <input id="defaultendpoint-input" placeholder="https://endpointurl" className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></input>
+          <p id="inputendpoint-p" className="hidden" >Please enter an endpoint.</p>
         </div>
       </div>
       <div id="varcalctwo-div" className="flex flex-wrap -mx-3 mb-6">
@@ -553,12 +559,16 @@ function App() {
             Choose user addresses input:
           </label>
           <div id="useroptions-div">
-            <label id="addcsvfile-label" onClick={() => openCSVFileDiv()} className="block uppercase cursor-pointer tracking-wide text-blue-700 underline text-xs font-bold mb-2">
-              Add user addresses as csv file.
-            </label>
-            <label id="addinput-label" onClick={() => openCommaInputDiv()} className="block uppercase cursor-pointer tracking-wide text-blue-700 underline text-xs font-bold mb-2">
-              Add user addresses as comma seperated list.
-            </label>
+            <div className="flex">
+              <label id="addcsvfile-label" onClick={() => openCSVFileDiv()} className="block uppercase cursor-pointer tracking-wide text-blue-700 underline text-xs font-bold mb-2">
+                Add user addresses as csv file.
+              </label>
+            </div>
+            <div className="flex">
+              <label id="addinput-label" onClick={() => openCommaInputDiv()} className="block uppercase cursor-pointer tracking-wide text-blue-700 underline text-xs font-bold mb-2">
+                Add user addresses as comma seperated list.
+              </label>
+            </div>
             <p id="useroptions-p" className="hidden" >Please select an input to insert user addresses.</p>
           </div>
         </div>
@@ -579,14 +589,14 @@ function App() {
         </div>
       </div>
       <div id="showlogs-div" className="relative">
-        <div className="absolute top-0 left-0">
+        <div className="absolute left-0">
           <label id="showlogs-button" onClick={() => displayLogs()} className="hidden">
             SEE USERS LOGS
           </label>
         </div>
       </div>
       <div id="reset-div" className="relative">
-        <div className="absolute top-0 right-0">
+        <div className="absolute right-0">
           <label id="reset-button" onClick={() => resetForm()} className="block uppercase cursor-pointer tracking-wide text-red-700 underline text-xs font-bold mb-2">
             RESET
           </label>
@@ -605,7 +615,7 @@ function App() {
       <table style={{textAlign: "center"}} id="users-table" className="w-full text-sm text-left text-gray-500 dark:text-gray-400 border-collapse border border-slate-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
-				    <th className="py-3 px-6 border border-slate-300" scope="col">Addresses</th>
+				    <th className="py-3 px-6 border border-slate-300" scope="col">User Address</th>
 				    <th scope="col" className="py-3 px-6 border border-slate-300">Balance</th>
 				    <th scope="col" className="py-3 px-6 border border-slate-300">Allowances</th>
 			    </tr>
@@ -635,8 +645,9 @@ function App() {
           </h1>
           <label className="text-sm">
             1.  Select a network to connect to. If desired network is not present
-                select 'other' and a textfield will appear to enter a url for 
-                the network node that you need.
+                select 'Other' and a textfield will appear to enter a url for 
+                the network node that you need. To go back to the select options if
+                'Other' was chosen, select the "RESET" label.
             <div className="grid place-items-center border">
               <label className="font-bold pt-4 text-xs">Netowork nodes to select:</label>
               <img src="images/select.png" className="w-25 h-20"></img>
@@ -664,6 +675,7 @@ function App() {
             the csv file from your library by using the 'Select file' button and clicking 'Submit'. Otherwise 
             you will need to enter the addresses as a comma seperated list by 
             clicking the second link, no button is required to submit addresses with the second option.
+            To go back to the two address input options, click the 'RESET' label in the bottom right corner.
             <div className="grid place-items-center border">
               <label className="font-bold pt-4 text-xs">Choosing how to input user addresses:</label>
               <img src="images/choice.png" className="w-25 h-20"></img>
