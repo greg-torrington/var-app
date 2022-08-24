@@ -50,6 +50,13 @@ function App() {
 
   }
 
+  // Closes alert
+  async function closeAlert(){
+
+    document.getElementById("float-alert").className = "hidden";
+
+  }
+
   // Each if statment determines if the correct data has been entered for each input field
   // if not a error message will be displayed under the input field which has the incorrect
   // data.
@@ -559,6 +566,13 @@ function App() {
 
   return (
   <div id="screen-div" className="grid h-screen place-items-center" onLoad={() => recordScreenDiv()}>
+
+  <div id="float-alert" className="alert bg-yellow-100 rounded-lg py-3 px-3 mb-3 text-base text-yellow-700 inline-flex grid place-items-center w-full alert-dismissible fade show" role="alert">
+    A FLOAT product, calculating the approval adjusted value at risk.
+    <button className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none" onClick={() => closeAlert()}> 
+    <span>×</span>
+    </button>
+  </div>
 
     <img src="https://media-float-capital.fra1.cdn.digitaloceanspaces.com/public/img/float-logo-sq-center.svg" width={100} height={100}/>
 
