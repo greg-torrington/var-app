@@ -346,7 +346,7 @@ function App() {
 
     reader.onload = async function (e) {
 
-      var button = document.getElementById("calculate-button");
+      var button = document.getElementById("calcbutton-div");
       var spinner = document.getElementById("spinner-div");
 
       spinner.className = "flex justify-center items-center";
@@ -381,7 +381,7 @@ function App() {
 
       }
       
-      document.getElementById("varcalculated-label").innerHTML = "VaR Calculated: $" + VaRTotal.toFixed(2);
+      document.getElementById("varcalculated-label").innerHTML = "Approval Adjusted VaR Calculated: $" + VaRTotal.toFixed(2);
       spinner.className = "hidden";
       button.className = "invisible";
 
@@ -400,7 +400,7 @@ function App() {
     var list = document.getElementById("usersaddresses-input").value;
     var arrayUsersAddresses = list.split(",");
 
-    var button = document.getElementById("calculate-button");
+    var button = document.getElementById("calcbutton-div");
     var spinner = document.getElementById("spinner-div");
 
     spinner.className = "flex justify-center items-center";
@@ -431,7 +431,7 @@ function App() {
 
     }
 
-    document.getElementById("varcalculated-label").innerHTML = "VaR Calculated: $" + VaRTotal.toFixed(2);
+    document.getElementById("varcalculated-label").innerHTML = "Approval Adjusted VaR Calculated: $" + VaRTotal.toFixed(2);
     spinner.className = "hidden";
     button.className = "invisible";
 
@@ -484,9 +484,9 @@ function App() {
 
     document.getElementById("varapp-div").className = "hidden";
 
-    if (document.getElementById("calculate-button")!=null){
+    if (document.getElementById("calcbutton-div").offsetParent!=null){
 
-      document.getElementById("calculate-button").className = "invisible";
+      document.getElementById("calcbutton-div").className = "invisible";
 
     }
 
@@ -509,7 +509,7 @@ function App() {
 
       if (!VaRCalculated){
 
-        document.getElementById("calculate-button").className = "bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded";
+        document.getElementById("calcbutton-div").className = "relative m-1";
 
       }
 
@@ -563,7 +563,7 @@ function App() {
     <img src="https://media-float-capital.fra1.cdn.digitaloceanspaces.com/public/img/float-logo-sq-center.svg" width={100} height={100}/>
 
     <h1 style={{textAlign : "center"}} className="ttext-lg md:text-2xl font-vt323 font-extrabold text-center" id="varcalculated-label">
-      VaR Calculated: $0
+      Approval Adjusted VaR Calculated: $0
     </h1>
 
     <div id="varapp-div" className="max-w-lg bg-white shadow-md rounded px-8 pt-6 pb-8">
@@ -794,9 +794,14 @@ function App() {
 
     </div>
 
-    <button id="calculate-button" className="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => submitButtonPressed()}>
-      Calculate VaR
-    </button>
+    <div className="relative m-1" id="calcbutton-div">
+      <div className="transform translate-x-1 translate-y-1 w-full bg-primary inline-block border-0">
+        <button id="calculate-button" className="transform -translate-x-1 -translate-y-1 hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0 active:translate-y-0 active:text-white active:bg-primary active:outline-none
+        w-full transition ease-linear duration-0 italic cursor-pointer bg-white border text-primary uppercase tracking-btn-text p-3 focus:outline-none text-base" onClick={() => submitButtonPressed()}>
+          Calculate VaR
+        </button>
+      </div>
+    </div>
 
     <div id="spinner-div" className="hidden">
       <div className="animate-spin w-10 h-10" role="status">

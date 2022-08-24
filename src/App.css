@@ -27,6 +27,32 @@
   .App-link {
     color: #61dafb;
   }
+
+  .bg-primary {
+    --tw-bg-opacity: 1;
+    background-color: rgb(13 65 132/var(--tw-bg-opacity));
+  }
+
+  .bg-white {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255/var(--tw-bg-opacity));
+  }
+
+  .text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .text-primary {
+    --tw-text-opacity: 1;
+    color: rgb(13 65 132/var(--tw-text-opacity));
+  }
+
+  .border {
+    border-width: 1px;
+    border: 0 solid #0d4184;
+  }
+
   
   @keyframes App-logo-spin {
     from {

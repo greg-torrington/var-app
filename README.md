@@ -1,5 +1,5 @@
 # Approval adjusted VaR analyser
-A tool that calculates a contracts approval adjusted VaR at a given point
+This tool, a product by FLOAT, calculates a contracts approval adjusted VaR at a given point
 in time according to an ERC20 token. The program functions by allowing
 an ERC20 address to be entered, the specific contracts address to be
 entered, and a list of user addresses by either a CSV file or a comma seperated
@@ -51,5 +51,4 @@ Further work to be done:
 
     1.  Error catch statements for when the user enters an incorrect address or node url.
     
-    2.  Allow better structure in the UI for less moving around when switching between
-        table, explainer tool and input page.
+    2.  Use approval events, from chosen contract, to get list of users. Could be more complex and under performant. 
