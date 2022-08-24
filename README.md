@@ -13,7 +13,7 @@ This application was built with by the following features:
     3.  ethers js
 
 # Run the app
-    1. Clone the repo (will need npm, ethers js, craco installed locally/globally):
+    1. Clone the repo (will need npm, ethers js, craco installed locally/globally): 
         https://github.com/greg-torrington/var-app.git
     
     2. Run application: 
@@ -22,29 +22,18 @@ This application was built with by the following features:
 # Usage
 Below will be a step by step on how to use the application to its full potential:
     
-    1.  Enter correct data into the first three inputs provided, the first input 
-        box is to connect to a network node, this is a select box but can be changed to 
-        an input text field by selecting 'other' if the required node is not listed. The 
-        second input is an input text field, this is for the ERC20 token address, the third
-        input is for the contract address. 
+    1.  Enter correct data into the first three inputs provided, the first input box is to connect to a network node, this is a select box but can be changed to an input text field by selecting 'other' if the required node is not listed. The second input is an input text field, this is for the ERC20 token address, the third input is for the contract address. 
 
-    2.  Once relevant data has been entered in the 3 fields, select either blue label 
-        depending on how you want to enter user address data. 
-            - If user addresses are stored in a CSV file, select the blue link labeled as,
-            "ADD USER ADDRESSES AS CSV FILE.". Select the "Choose file" button to submit 
-            the csv file, it must be stored in your library, press "Submit".
+    2.  Once relevant data has been entered in the 3 fields, select either blue label depending on how you want to enter user address data. 
+        - If user addresses are stored in a CSV file, select the blue link labeled as,"ADD USER ADDRESSES AS CSV FILE.". Select the "Choose file" button to submit the csv file, it must be stored in your library, press "Submit".
 
-        - User addresses can also be inputted as a comma seperated list by selecting the
-        label, "ADD USER ADDRESSES AS COMMA SEPERATED LIST.". This will allow the data to be entered into a input text field, the comma separated list cannot have any spaces.
+        - User addresses can also be inputted as a comma seperated list by selecting the label, "ADD USER ADDRESSES AS COMMA SEPERATED LIST.". This will allow the data to be entered into an input text field, the comma separated list cannot have any spaces.
 
-    3.  Once all data has been entered, only then can the user select the button "Calculate VaR"
-        for it to have an effect. A loading spinner will replace the button until the VaR amount is displayed below the FLOAT logo with a figure. If not all data has been entered, a relevant error message will be displayed on the UI indicating which input field does not have information.
+    3.  Once all data has been entered, only then can the user select the button "Calculate VaR" for it to have an effect. A loading spinner will replace the button until the VaR amount is displayed below the FLOAT logo with a figure. If not all data has been entered, a relevant error message will be displayed on the UI indicating which input field does not have information.
 
-    4.  A label marked as "SEE USERS LOGS" will be displayed in the bottom left corner once 
-        VaR has been calculated. Selecting this label will display a table with user addresses and their corresponding allowance and balance, this table will replace the input page. Selecting the "BACK" label will replace the table with the input page.
+    4.  A label marked as "SEE USERS LOGS" will be displayed in the bottom left corner once VaR has been calculated. Selecting this label will display a table with user addresses and their corresponding allowance and balance, this table will replace the input page. Selecting the "BACK" label will replace the table with the input page.
 
-    5   Lastly, the "RESET" label displayed will set the webpage back to its default setting 
-        whenever pressed.
+    5   Lastly, the "RESET" label displayed will set the webpage back to its default setting whenever pressed.
 
 # Further work
 Further work to be done:
