@@ -16,6 +16,9 @@ function App() {
     "function balanceOf(address) view returns (uint)",
   ];
 
+  // Determines if alert has been hidden at start
+  var alertDisplayed = true;
+
   // For the first three inputs recorded.
   var provider = null;
   var erc20 = null;
@@ -54,6 +57,8 @@ function App() {
   async function closeAlert(){
 
     document.getElementById("float-alert").className = "hidden";
+
+    alertDisplayed = false;
 
   }
 
@@ -561,6 +566,12 @@ function App() {
     userAllowances = [];
 
     VaRCalculated = false;
+
+    if (!alertDisplayed){
+
+      document.getElementById("float-alert").className = "hidden";
+
+    }
 
   }
 
