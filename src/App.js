@@ -401,7 +401,7 @@ function App() {
     reader.readAsText(input);
   }
 
-  // Separates user input into an array and calculates VaR and records user input
+  // Separates user input into an array, calculates VaR and records user input
   async function calculateVaRAsCommaSeperatedList(){
 
     var list = document.getElementById("usersaddresses-input").value;
