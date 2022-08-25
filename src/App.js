@@ -210,6 +210,8 @@ function App() {
 
     }
 
+    document.getElementById("defaultendpoint-input").value = "";
+
     document.getElementById("defaultendpoint-select").value = "Select end point";
 
   }
@@ -550,6 +552,7 @@ function App() {
     document.getElementById("selectback-label").onclick = function(){switchBackToSelect()};
     document.getElementById("csvback-label").onclick = function(){switchBackToUserAddressOptions()};
     document.getElementById("commaback-label").onclick = function(){switchBackToUserAddressOptions()};
+    document.getElementById("closealert-button").onclick = function(){closeAlert()};
 
     provider = null;
     erc20 = null;
@@ -578,9 +581,9 @@ function App() {
   return (
   <div id="screen-div" className="grid h-screen place-items-center" onLoad={() => recordScreenDiv()}>
 
-  <div id="float-alert" className="alert bg-yellow-100 rounded-lg py-3 px-3 mb-3 text-base text-yellow-700 inline-flex grid place-items-center w-full alert-dismissible fade show" role="alert">
+  <div id="float-alert" className="alert bg-yellow-100 rounded-lg py-2 px-2 mb-3 text-base text-yellow-700 inline-flex grid place-items-center w-full alert-dismissible fade show" role="alert">
     A FLOAT product, calculating the approval adjusted value at risk.
-    <button className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none" onClick={() => closeAlert()}> 
+    <button id="closealert-button" className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none" onClick={() => closeAlert()}> 
     <span>×</span>
     </button>
   </div>
