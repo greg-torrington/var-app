@@ -33,7 +33,7 @@ Below will be a step by step on how to use the application to its full potential
 
     4.  A label marked as "SEE USERS LOGS" will be displayed in the bottom left corner once VaR has been calculated. Selecting this label will display a table with user addresses and their corresponding allowance and balance, this table will replace the input page.
 
-    5.  An explainer tool button with text, "?", is displayed in the top right hand corner. Selecting this button will direct to a page explaining how to use the application to its full potential.
+    5.  An explainer tool button with text, "?", is displayed in the top right hand corner. Selecting this button will direct to a page explaining how to use the application to its full potential. 
 
     6.  Labels marked with "BACK" which are displayed on the explainer tool and user logs pages, in the top left hand corner, will direct you back to the VaR calculating page with information you have previously entered still recorded.
 
