@@ -8,7 +8,7 @@ list. The VaR is then calcualted.
 # Built with
 This application was built with by the following features:
 
-    1.  react
+    1.  react 
     2.  tailwind 
     3.  ethers js
 
