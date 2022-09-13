@@ -27,7 +27,7 @@ Below will be a step by step on how to use the application to its full potential
     2.  Once relevant data has been entered in the 3 fields, select a blue label depending on how you want to enter user address data. 
         - If user addresses are stored in a CSV file, select the blue link labeled as,"ADD USER ADDRESSES AS CSV FILE.". Select the "Choose file" button to submit the csv file, it must be stored in your library, press "Submit".
 
-        - User addresses can also be inputted as a comma seperated list by selecting the label, "ADD USER ADDRESSES AS COMMA SEPERATED LIST.". This will allow the data to be entered into an input text field, the comma separated list cannot have any spaces.
+        - User addresses can also be inputted as a comma seperated list by selecting the label, "ADD USER ADDRESSES AS COMMA SEPERATED LIST.". This will allow the data to be entered into an input text field, the comma separated list cannot have any spaces. 
 
     3.  Once all data has been entered, only then can the user select the button "Calculate VaR" for it to have an effect. A loading spinner will replace the button until the VaR amount is displayed below the FLOAT logo with a figure. If not all data has been entered, a relevant error message will be displayed on the UI indicating which input field does not have information.
 
