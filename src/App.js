@@ -25,7 +25,7 @@ function App(){
                 </a>
               </nav>
             </div>
-            <div className="m-auto pt-20 w-full">
+            <div className="m-auto pt-20 w-full ">
                 <Routes>
                   <Route path="/" element={ <LeaderBoard/> } />
                   <Route path="/protocol" element={ <ChosenProtocol/> } />
