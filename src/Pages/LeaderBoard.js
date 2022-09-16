@@ -31,7 +31,7 @@ async function navigateToProtolPage(i, name){
 
 function LeaderBoard() {
 
-  var filterStr = ""
+  const [searchTerm, setSearchTerm] = useState("")
 
   navigate = useNavigate()
 
@@ -52,7 +52,7 @@ function LeaderBoard() {
                           <form className="h-full">
                             <div className="relative">
                               <div className="flex flex-row my-3 shadow-md">
-                                <input id="filter-input" placeholder="Enter protocol name, token or contract address" type="text" className="py-2 font-normal text-grey-darkest w-full py-1 px-2 outline-none text-md text-gray-600 flex-1" />
+                                <input id="filter-input" onChange={event => {setSearchTerm(event.target.value)}} placeholder="Enter protocol name, token or contract address" type="text" className="py-2 font-normal text-grey-darkest w-full py-1 px-2 outline-none text-md text-gray-600 flex-1" />
                               </div>
                               <div className="inline-block mx-auto py-2 w-full">
                                 <div className="rounded-lg border-2 w-full max-h-60 overflow-y-auto no-scrollbar">
@@ -67,7 +67,13 @@ function LeaderBoard() {
                                     <tbody id="protocols-tbody" className="divide-y divide-gray-200">
                                       {
                                         data
-                                        .filter(item => item.name.includes(String(filterStr)))
+                                        .filter( (item) => {
+                                          if (searchTerm==""){
+                                            return item
+                                          } else if (item.name.toLowerCase().includes(searchTerm.toLowerCase())){
+                                            return item
+                                          }
+                                        })
                                         .map((item, i) => {
 
                                           if (i==0){
