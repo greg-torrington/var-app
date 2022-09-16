@@ -24,8 +24,8 @@ function ChosenProtocol(){
                     <div className="rounded-lg">
                         <div className="px-1">
                             <div className="general-styles_screen-centered-container__3fxeE h-full pb-2">
-                                <h1 className="text-center text-3xl underline">
-                                    {chosenProtocolName}
+                                <h1 className="text-center text-3xl">
+                                    🔥 {chosenProtocolName}
                                 </h1>
                             </div>
                         </div>
