@@ -1,0 +1,48 @@
+[
+    {
+        "name": "curve", 
+        "contracts": [
+            "0x05094i44f",
+            "0xsd5474hdhd",
+            "0x0405444"
+        ]
+    },
+    {
+        "name": "uniswap",
+        "contracts": [
+            "0x755744kdkdk",
+            "0x3838338ss",
+            "0xeyruh8r8",
+            "0xrofujj494"
+        ]
+    },
+    {
+        "name": "aave",
+        "contracts": [
+            "0x85749j",
+            "0x48934898"
+        ]   
+    },
+    {
+        "name": "compound",
+        "contracts": [
+            "0x444fkfkfk4",
+            "0x0495954fkfk",
+            "0x940404940",
+            "0x02044i4ffjf0"
+        ]
+    },
+    {
+        "name": "xyz",
+        "contracts": [
+            "0x3344333",
+            "0x45444"
+        ]
+    },
+    {
+        "name": "InstaDApp",
+        "contracts": [
+            "0x0403040400ddd"
+        ]
+    }
+]

@@ -1,46 +1,10 @@
-.min-h-screen {
-  min-height: 100vh;
-}
-
-.flex {
-  display: flex;
-}
 
 .lg\:justify-center {
   justify-content: center;
 }
 
-.w-full {
-  width: 100%;
-}
-
-.text-gray-900 {
-  --tw-text-opacity: 1;
-  color: rgb(17 24 39/var(--tw-text-opacity));
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.h-screen {
-  height: 100vh;
-}
-
-.pt-20 {
-  padding-top: 5rem;
-}
-
-.m-auto {
-  margin: auto;
-}
-
 .justify-center {
   justify-content: center;
-}
-
-.items-center {
-  align-items: center;
 }
 
 .md\:max-w-mint-width {
@@ -86,22 +50,9 @@
   justify-content: space-between;
 }
 
-.mb-2 {
-  margin-bottom: 0.5rem;
-}
-
-.flex-row {
-  flex-direction: row;
-}
-
 .shadow-md {
   --tw-shadow: 0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -2px rgba(0,0,0,0.1);
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color),0 2px 4px -2px var(--tw-shadow-color);
-}
-
-.my-3 {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
 }
 
 .outline-none {
@@ -135,11 +86,6 @@
 .general-styles_screen-centered-container__3fxeE {
   width: 100%;
   height: 100%;
-}
-
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .inline-block {
@@ -177,11 +123,6 @@ table {
 
 .font-alphbeta {
   font-family: alphbeta;
-}
-
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
 }
 
 /* Hide scroll bar for Chrome */
