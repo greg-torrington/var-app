@@ -24,7 +24,7 @@ function TotalVAR(){
                                 <div className="px-1">
                                     <div className="general-styles_screen-centered-container__3fxeE h-full pt-2">
                                         <h1 className="text-center text-xl pt-2">
-                                            Yearly Approval Adjusted VaR
+                                            📈 Yearly Approval Adjusted VaR (All protocols)
                                         </h1>
                                     </div>
                                 </div>

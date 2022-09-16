@@ -1,5 +1,6 @@
-import React, { useEffect, useState, Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import data from "./config.contracts.json"
 
 var protocols = []
 var contractSets = []
@@ -12,8 +13,6 @@ export var chosenVaRofContracts = []
 export var chosenProtocolName
 
 async function sortData(){
-
-  var data = require("./config.contracts.json")
 
   data.map( (data) => {
       protocols.push(data.name)
@@ -32,20 +31,13 @@ async function navigateToProtolPage(i, name){
 
 function LeaderBoard() {
 
-  var filterStr
+  const [searchTerm, setSearchTerm] = useState("")
 
   navigate = useNavigate()
-  const [data, getData] = useState([])
 
   useEffect(() => {
-      fetchData()
       sortData()
   }, []);
-
-  const fetchData = () => {
-    var data = require("./config.contracts.json")
-    getData(data)
-  }
 
     return(
       <div>
@@ -60,7 +52,7 @@ function LeaderBoard() {
                           <form className="h-full">
                             <div className="relative">
                               <div className="flex flex-row my-3 shadow-md">
-                                <input id="filter-input" value={filterStr} onChange={console.log(filterStr)} placeholder="Enter protocol name, token or contract address" type="text" className="py-2 font-normal text-grey-darkest w-full py-1 px-2 outline-none text-md text-gray-600 flex-1" />
+                                <input id="filter-input" onChange={event => {setSearchTerm(event.target.value)}} placeholder="Enter protocol name, token or contract address" type="text" className="py-2 font-normal text-grey-darkest w-full py-1 px-2 outline-none text-md text-gray-600 flex-1" />
                               </div>
                               <div className="inline-block mx-auto py-2 w-full">
                                 <div className="rounded-lg border-2 w-full max-h-60 overflow-y-auto no-scrollbar">
@@ -74,7 +66,15 @@ function LeaderBoard() {
                                     </thead>
                                     <tbody id="protocols-tbody" className="divide-y divide-gray-200">
                                       {
-                                        data.map((item, i) => {
+                                        data
+                                        .filter( (item) => {
+                                          if (searchTerm==""){
+                                            return item
+                                          } else if (item.name.toLowerCase().includes(searchTerm.toLowerCase())){
+                                            return item
+                                          }
+                                        })
+                                        .map((item, i) => {
 
                                           if (i==0){
                                             return(
@@ -122,7 +122,7 @@ function LeaderBoard() {
                         </div>
                       </div>
                       <h3 className="text-center text-base pb-2 cursor-pointer pt-3" onClick={() => navigate("/totalVAR")}>
-                        Total: $10000
+                      💸 Total: $10000
                       </h3>
                     </div>
                   </div>
