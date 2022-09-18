@@ -1,7 +1,7 @@
 import React from 'react'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { useNavigate } from "react-router-dom";
-import { chosenContracts, chosenProtocolName } from "./LeaderBoard"; //import { chosenContracts, chosenVaRofContracts } from "./LeaderBoard"
+import { chosenData } from "./LeaderBoard"; //import { chosenContracts, chosenVaRofContracts } from "./LeaderBoard"
 
 const data = [{name: 'January', uv: 400, pv: 2400, amt: 1000}, {name: "February", uv: 400, pv: 1800, amt: 1000}];
 
@@ -25,7 +25,7 @@ function ChosenProtocol(){
                         <div className="px-1">
                             <div className="general-styles_screen-centered-container__3fxeE h-full pb-2">
                                 <h1 className="text-center text-3xl">
-                                    🔥 {chosenProtocolName}
+                                    🔥 {chosenData.name}
                                 </h1>
                             </div>
                         </div>
@@ -52,42 +52,42 @@ function ChosenProtocol(){
                                                     </thead>
                                                     <tbody className="divide-y divide-gray-200">
                                                         {
-                                                        chosenContracts.map( (contract, i) => {
-                                                            if (i==0){
-                                                                return(
-                                                                    <tr key={i} className="text-xs md:text-xxs lg:text-xs shadow-md">
-                                                                        <td className="px-1 py-3">{1} 🏆</td>
-                                                                        <td className="px-1 py-3">{contract}</td>
-                                                                        <td className="px-1 py-3">$$$</td>
-                                                                    </tr>
-                                                                    )
-                                                            } else if (i==1){
-                                                                return(
-                                                                    <tr key={i} className="text-xs md:text-xxs lg:text-xs shadow-md">
-                                                                        <td className="px-1 py-3">{2} 🥈</td>
-                                                                        <td className="px-1 py-3">{contract}</td>
-                                                                        <td className="px-1 py-3">$$$</td>
-                                                                    </tr>
-                                                                    )
-                                                            } else if (i==2){
-                                                                return(
-                                                                    <tr key={i} className="text-xs md:text-xxs lg:text-xs shadow-md">
-                                                                        <td className="px-1 py-3">{3} 🥉</td>
-                                                                        <td className="px-1 py-3">{contract}</td>
-                                                                        <td className="px-1 py-3">$$$</td>
-                                                                    </tr>
-                                                                    )
-                                                            } else {
-                                                                return(
-                                                                    <tr key={i} className="text-xs md:text-xxs lg:text-xs shadow-md">
-                                                                        <td className="px-1 py-3">{i+1}</td>
-                                                                        <td className="px-1 py-3">{contract}</td>
-                                                                        <td className="px-1 py-3">$$$</td>
-                                                                    </tr>
-                                                                    )
-                                                            }
-                                            
-                                                        })}
+                                                        //chosenContracts.map( (contract, i) => {
+                                                        //    if (i==0){
+                                                        //       return(
+                                                        //            <tr key={i} className="text-xs md:text-xxs lg:text-xs shadow-md">
+                                                        //                <td className="px-1 py-3">{1} 🏆</td>
+                                                        //                <td className="px-1 py-3">{contract}</td>
+                                                        //                <td className="px-1 py-3">$$$</td>
+                                                        //            </tr>
+                                                        //            )
+                                                        //    } else if (i==1){
+                                                        //        return(
+                                                        //            <tr key={i} className="text-xs md:text-xxs lg:text-xs shadow-md">
+                                                        //                <td className="px-1 py-3">{2} 🥈</td>
+                                                        //                <td className="px-1 py-3">{contract}</td>
+                                                        //                <td className="px-1 py-3">$$$</td>
+                                                        //            </tr>
+                                                        //            )
+                                                        //    } else if (i==2){
+                                                        //        return(
+                                                        //            <tr key={i} className="text-xs md:text-xxs lg:text-xs shadow-md">
+                                                        //                <td className="px-1 py-3">{3} 🥉</td>
+                                                        //                <td className="px-1 py-3">{contract}</td>
+                                                        //                <td className="px-1 py-3">$$$</td>
+                                                        //            </tr>
+                                                        //            )
+                                                        //    } else {
+                                                        //        return(
+                                                        //            <tr key={i} className="text-xs md:text-xxs lg:text-xs shadow-md">
+                                                        //                <td className="px-1 py-3">{i+1}</td>
+                                                        //                <td className="px-1 py-3">{contract}</td>
+                                                        //                <td className="px-1 py-3">$$$</td>
+                                                        //             </tr>
+                                                        //            )
+                                                        //    }
+                                                        //})
+                                                        }
                                                     </tbody>
                                                 </table>
                                             </div>

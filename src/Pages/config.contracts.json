@@ -1,48 +1,32 @@
 [
     {
         "name": "curve", 
-        "contracts": [
-            "0x05094i44f",
-            "0xsd5474hdhd",
-            "0x0405444"
-        ]
+        "type": "protocol",
+        "address": "0x4jf9494fj9f"
     },
     {
         "name": "uniswap",
-        "contracts": [
-            "0x755744kdkdk",
-            "0x3838338ss",
-            "0xeyruh8r8",
-            "0xrofujj494"
-        ]
+        "type": "contract",
+        "address": "0x76774jf94dkjd94fj9f"
     },
     {
         "name": "aave",
-        "contracts": [
-            "0x85749j",
-            "0x48934898"
-        ]   
+        "type": "contract",
+        "address": "0x454jf9htrh78i878494fj9f"  
     },
     {
         "name": "compound",
-        "contracts": [
-            "0x444fkfkfk4",
-            "0x0495954fkfk",
-            "0x940404940",
-            "0x02044i4ffjf0"
-        ]
+        "type": "protocol",
+        "address": "0x223fff4444jf9494fj9f"
     },
     {
         "name": "xyz",
-        "contracts": [
-            "0x3344333",
-            "0x45444"
-        ]
+        "type": "protocol",
+        "address": "0x1226h666894jf9494fj9f"
     },
     {
         "name": "InstaDApp",
-        "contracts": [
-            "0x0403040400ddd"
-        ]
+        "type": "contract",
+        "address": "0x989090jdj4jf9494fj9f"
     }
 ]
