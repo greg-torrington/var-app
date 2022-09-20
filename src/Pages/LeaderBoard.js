@@ -2,30 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import data from "./config.contracts.json"
 
-var protocols = []
-var contractSets = []
+var dataArray = []
 var VaRofContracts = ["$$$","$$$","$$$", "$$$", "$$$", "$$$"]
 
 var navigate;
 
-export var chosenContracts = []
-export var chosenVaRofContracts = []
-export var chosenProtocolName
+export var chosenData
 
 async function sortData(){
 
   data.map( (data) => {
-      protocols.push(data.name)
-      var list = JSON.parse(JSON.stringify(data.contracts))
-      contractSets.push(list)
+      dataArray.push(data)
   })
 
 }
 
-async function navigateToProtolPage(i, name){
-  // chosenVaRofContracts = []
-  chosenProtocolName = name
-  chosenContracts = contractSets[i]
+async function navigateToProtolPage(i){
+  chosenData = dataArray[i]
   navigate("/protocol");
 }
 
@@ -68,7 +61,7 @@ function LeaderBoard() {
                                       {
                                         data
                                         .filter( (item) => {
-                                          if (searchTerm==""){
+                                          if (searchTerm===""){
                                             return item
                                           } else if (item.name.toLowerCase().includes(searchTerm.toLowerCase())){
                                             return item
@@ -76,27 +69,27 @@ function LeaderBoard() {
                                         })
                                         .map((item, i) => {
 
-                                          if (i==0){
+                                          if (i===0){
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{1} 🏆</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i, item.name)}>{item.name}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item.name}</td>
                                                 <td className="px-1 py-3">{VaRofContracts[i]}</td>
                                               </tr>
                                             )
-                                          } else if (i==1){
+                                          } else if (i===1){
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{2} 🥈</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i, item.name)}>{item.name}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item.name}</td>
                                                 <td className="px-1 py-3">{VaRofContracts[i]}</td>
                                               </tr>
                                             )
-                                          } else if (i==2){
+                                          } else if (i===2){
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{3} 🥉</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i, item.name)}>{item.name}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item.name}</td>
                                                 <td className="px-1 py-3">{VaRofContracts[i]}</td>
                                               </tr>
                                             )
@@ -104,13 +97,11 @@ function LeaderBoard() {
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{i+1}</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i, item.name)}>{item.name}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item.name}</td>
                                                 <td className="px-1 py-3">{VaRofContracts[i]}</td>
                                               </tr>
                                             )
-                                          }
-
-                                        
+                                          }                                        
                                         }
                                       )}
                                     </tbody>
