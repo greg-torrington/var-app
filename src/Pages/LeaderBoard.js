@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import data from "./config.contracts.json"
+import { createClient } from "urql"
+
+const APIURL = "https://api.thegraph.com/subgraphs/name/greg-torrington/greg-v3"
+const assetQuery = `
+query {
+  assets {
+    id
+  	count
+  }
+}
+`
+
+const client = createClient({
+  url: APIURL
+})
 
 var dataArray = []
 var VaRofContracts = ["$$$","$$$","$$$", "$$$", "$$$", "$$$"]
@@ -24,13 +39,67 @@ async function navigateToProtolPage(i){
 
 function LeaderBoard() {
 
+  let noUsers 
+  let usersQuery = `
+  query {
+    users(first: ` + " 1000 " + `) {
+      id
+      balance
+      allowance
+    }
+  }
+  `
+
+  var users
+
+  async function fetchBlockChainData() {
+    const assetResponse = await client.query(assetQuery).toPromise()
+    noUsers = assetResponse.data.assets[0].count
+
+    var skip = 0
+    var first = 1000
+    while (noUsers > 0){
+      noUsers = noUsers - 1000
+
+      if (users<=1000){
+        first = users
+      }
+
+      usersQuery = `
+        query {
+        users(
+          first: `+first+`
+          skip: `+skip+` 
+          ) {
+            id
+            balance
+            allowance
+        }
+      }
+      `
+      skip += 1000
+
+      const userResponse = await client.query(usersQuery).toPromise()
+      console.log(userResponse)
+
+    }
+
+    const userResponse = await client.query(usersQuery).toPromise()
+    
+  }
+
   const [searchTerm, setSearchTerm] = useState("")
 
   navigate = useNavigate()
 
   useEffect(() => {
+      fetchBlockChainData()
       sortData()
   }, []);
+
+  //users.map((user, i)=>{
+  //  console.log(i+ " " + user.id)
+  //})
 
     return(
       <div>
