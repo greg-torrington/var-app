@@ -27,7 +27,8 @@ function App(){
             </div>
             <div className="m-auto pt-20 w-full">
                 <Routes>
-                  <Route path="/" element={ <LeaderBoard/> } />
+                  <Route path="/" element={<Loading/>} />
+                  <Route path="/leaderboard" element={ <LeaderBoard/> } />
                   <Route path="/protocol" element={ <ChosenProtocol/> } />
                   <Route path="/totalVAR" element={ <TotalVAR/> } />
                 </Routes>

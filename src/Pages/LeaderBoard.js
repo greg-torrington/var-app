@@ -4,6 +4,7 @@ import data from "./config.contracts.json"
 import { createClient } from "urql"
 
 export let protocolInfo = []
+export let allProtocols = []
 
 const APIURL = "https://api.thegraph.com/subgraphs/name/greg-torrington/greg-v3"
 const assetQuery = `
@@ -77,11 +78,37 @@ function LeaderBoard() {
           noUsers = noUsers - 1000
 
         const userResponse = await client.query(usersQuery).toPromise()
-        users.push(userResponse)
-     }
-     protocolInfo[1][i][0] = users
+        users.push(userResponse.data.users)
+      }
+      protocolInfo[1][i][0] = users
+
+      //console.log(protocolInfo[1][i][0])
+
+      var contractVaR = 0
+      for (var j=0; j<protocolInfo[1][i][0].length; j++){
+        for (var c=0; c<protocolInfo[1][i][0][j].length; c++){
+
+          var allowance = protocolInfo[1][i][0][j][c].allowance
+          var balance = protocolInfo[1][i][0][j][c].balance
+          
+          if (allowance<balance){
+            contractVaR += allowance
+          } else {
+            contractVaR += balance
+          }
+
+        }
+      }
 
     }
+
+    var protocolVaR = 0
+    for (var i=0; i<protocolInfo[1].length; i++){
+      protocolVaR += protocolInfo[1][i][1]
+    }
+    protocolInfo[2] = protocolVaR
+    allProtocols.push(protocolInfo)
+    console.log("done")
   }
 
   const [searchTerm, setSearchTerm] = useState("")
@@ -92,10 +119,6 @@ function LeaderBoard() {
       fetchBlockChainData()
       sortData()
   }, []);
-
-  //users.map((user, i)=>{
-  //  console.log(i+ " " + user.id)
-  //})
 
     return(
       <div>
@@ -122,13 +145,16 @@ function LeaderBoard() {
                                        <td className="px-1 underline font-bold py-3">Approval Adjusted VaR</td>
                                       </tr>
                                     </thead>
+                                    {
+                                      fetchBlockChainData()
+                                    }
                                     <tbody id="protocols-tbody" className="divide-y divide-gray-200">
-                                      {
-                                        data
+                                      {  
+                                        allProtocols
                                         .filter( (item) => {
                                           if (searchTerm===""){
                                             return item
-                                          } else if (item.name.toLowerCase().includes(searchTerm.toLowerCase())){
+                                          } else if (item[0].toLowerCase().includes(searchTerm.toLowerCase())){
                                             return item
                                           }
                                         })
@@ -138,32 +164,32 @@ function LeaderBoard() {
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{1} 🏆</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item.name}</td>
-                                                <td className="px-1 py-3">{VaRofContracts[i]}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
+                                                <td className="px-1 py-3">{item[2]}</td>
                                               </tr>
                                             )
                                           } else if (i===1){
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{2} 🥈</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item.name}</td>
-                                                <td className="px-1 py-3">{VaRofContracts[i]}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
+                                                <td className="px-1 py-3">{item[2]}</td>
                                               </tr>
                                             )
                                           } else if (i===2){
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{3} 🥉</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item.name}</td>
-                                                <td className="px-1 py-3">{VaRofContracts[i]}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
+                                                <td className="px-1 py-3">{item[2]}</td>
                                               </tr>
                                             )
                                           } else {
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{i+1}</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item.name}</td>
-                                                <td className="px-1 py-3">{VaRofContracts[i]}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
+                                                <td className="px-1 py-3">{item[2]}</td>
                                               </tr>
                                             )
                                           }                                        
