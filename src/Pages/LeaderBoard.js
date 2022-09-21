@@ -40,31 +40,40 @@ async function navigateToProtolPage(i){
 function LeaderBoard() {
 
   let noUsers 
-  let usersQuery 
+  let usersQuery
+  let users = []
 
   async function fetchBlockChainData() {
     const assetResponse = await client.query(assetQuery).toPromise()
     noUsers = assetResponse.data.assets[0].count
 
-    //let offset = 0
-    //let limit = 
-    //while (noUsers>0){
+    let skip = 0
+    let first = 1000
+    while (noUsers>0) {
       
+      if (noUsers<1000){first=noUsers}
 
       usersQuery = `
         query {
-          users {
+          users (
+            first: `+first+`
+            after: `+skip+`
+          ){
             id
-            number
             balance
             allowance
           }
         }
         `
+        skip += 1000
+        noUsers = noUsers - 1000
 
       const userResponse = await client.query(usersQuery).toPromise()
-      console.log(userResponse)
-    //}
+      users.push(userResponse.data)
+    }
+
+    console.log(users.length)
+
     
   }
 
