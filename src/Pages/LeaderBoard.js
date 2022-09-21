@@ -3,12 +3,16 @@ import { useNavigate } from "react-router-dom";
 import data from "./config.contracts.json"
 import { createClient } from "urql"
 
+export let protocolInfo = []
+
 const APIURL = "https://api.thegraph.com/subgraphs/name/greg-torrington/greg-v3"
 const assetQuery = `
 query {
   assets {
     id
+    name
   	count
+    users
   }
 }
 `
@@ -39,42 +43,45 @@ async function navigateToProtolPage(i){
 
 function LeaderBoard() {
 
-  let noUsers 
   let usersQuery
-  let users = []
 
   async function fetchBlockChainData() {
     const assetResponse = await client.query(assetQuery).toPromise()
-    noUsers = assetResponse.data.assets[0].count
+    var rawAssetData = assetResponse.data.assets
+    protocolInfo[0] = "Maker"
+    protocolInfo[1] = rawAssetData
 
-    let skip = 0
-    let first = 1000
-    while (noUsers>0) {
+    for (var i=0; i<protocolInfo[1].length; i++){
+      var noUsers = protocolInfo[1][i].count
+      
+      let skip = 0
+      let first = 1000
+      let users = []
+      while (noUsers>0) {
       
       if (noUsers<1000){first=noUsers}
 
-      usersQuery = `
-        query {
-          users (
-            first: `+first+`
-            after: `+skip+`
-          ){
-            id
-            balance
-            allowance
+        usersQuery = `
+          query {
+            users (
+              first: `+first+`
+              after: `+skip+`
+            ){
+              id
+              balance
+              allowance
+            }
           }
-        }
-        `
-        skip += 1000
-        noUsers = noUsers - 1000
+          `
+          skip += 1000
+          noUsers = noUsers - 1000
 
-      const userResponse = await client.query(usersQuery).toPromise()
-      users.push(userResponse.data)
+        const userResponse = await client.query(usersQuery).toPromise()
+        users.push(userResponse)
+     }
+     protocolInfo[1][i][0] = users
+
     }
-
-    console.log(users.length)
-
-    
   }
 
   const [searchTerm, setSearchTerm] = useState("")
