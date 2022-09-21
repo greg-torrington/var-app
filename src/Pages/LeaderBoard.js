@@ -40,51 +40,31 @@ async function navigateToProtolPage(i){
 function LeaderBoard() {
 
   let noUsers 
-  let usersQuery = `
-  query {
-    users(first: ` + " 1000 " + `) {
-      id
-      balance
-      allowance
-    }
-  }
-  `
-
-  var users
+  let usersQuery 
 
   async function fetchBlockChainData() {
     const assetResponse = await client.query(assetQuery).toPromise()
     noUsers = assetResponse.data.assets[0].count
 
-    var skip = 0
-    var first = 1000
-    while (noUsers > 0){
-      noUsers = noUsers - 1000
-
-      if (users<=1000){
-        first = users
-      }
+    //let offset = 0
+    //let limit = 
+    //while (noUsers>0){
+      
 
       usersQuery = `
         query {
-        users(
-          first: `+first+`
-          skip: `+skip+` 
-          ) {
+          users {
             id
+            number
             balance
             allowance
+          }
         }
-      }
-      `
-      skip += 1000
+        `
 
       const userResponse = await client.query(usersQuery).toPromise()
       console.log(userResponse)
-
-    }
-
-    const userResponse = await client.query(usersQuery).toPromise()
+    //}
     
   }
 
