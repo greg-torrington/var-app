@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom"
 import LeaderBoard from './Pages/LeaderBoard';
 import ChosenProtocol from './Pages/ChosenProtocol';
 import TotalVAR from './Pages/TotalVAR';
+import Loading from './Pages/Loading';
 
 function App(){
 

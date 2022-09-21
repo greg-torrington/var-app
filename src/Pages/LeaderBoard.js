@@ -1,31 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import data from "./config.contracts.json"
-import { createClient } from "urql"
-
-export let protocolInfo = []
-export let allProtocols = []
-
-const APIURL = "https://api.thegraph.com/subgraphs/name/greg-torrington/greg-v3"
-const assetQuery = `
-query {
-  assets {
-    id
-    name
-  	count
-    users
-  }
-}
-`
-
-const client = createClient({
-  url: APIURL
-})
+import { allProtocols, totalVaR } from "./Loading"
 
 var dataArray = []
-var VaRofContracts = ["$$$","$$$","$$$", "$$$", "$$$", "$$$"]
 
 var navigate;
+
+const protocols = allProtocols;
 
 export var chosenData
 
@@ -44,79 +26,11 @@ async function navigateToProtolPage(i){
 
 function LeaderBoard() {
 
-  let usersQuery
-
-  async function fetchBlockChainData() {
-    const assetResponse = await client.query(assetQuery).toPromise()
-    var rawAssetData = assetResponse.data.assets
-    protocolInfo[0] = "Maker"
-    protocolInfo[1] = rawAssetData
-
-    for (var i=0; i<protocolInfo[1].length; i++){
-      var noUsers = protocolInfo[1][i].count
-      
-      let skip = 0
-      let first = 1000
-      let users = []
-      while (noUsers>0) {
-      
-      if (noUsers<1000){first=noUsers}
-
-        usersQuery = `
-          query {
-            users (
-              first: `+first+`
-              after: `+skip+`
-            ){
-              id
-              balance
-              allowance
-            }
-          }
-          `
-          skip += 1000
-          noUsers = noUsers - 1000
-
-        const userResponse = await client.query(usersQuery).toPromise()
-        users.push(userResponse.data.users)
-      }
-      protocolInfo[1][i][0] = users
-
-      //console.log(protocolInfo[1][i][0])
-
-      var contractVaR = 0
-      for (var j=0; j<protocolInfo[1][i][0].length; j++){
-        for (var c=0; c<protocolInfo[1][i][0][j].length; c++){
-
-          var allowance = protocolInfo[1][i][0][j][c].allowance
-          var balance = protocolInfo[1][i][0][j][c].balance
-          
-          if (allowance<balance){
-            contractVaR += allowance
-          } else {
-            contractVaR += balance
-          }
-
-        }
-      }
-
-    }
-
-    var protocolVaR = 0
-    for (var i=0; i<protocolInfo[1].length; i++){
-      protocolVaR += protocolInfo[1][i][1]
-    }
-    protocolInfo[2] = protocolVaR
-    allProtocols.push(protocolInfo)
-    console.log("done")
-  }
-
   const [searchTerm, setSearchTerm] = useState("")
 
   navigate = useNavigate()
 
   useEffect(() => {
-      fetchBlockChainData()
       sortData()
   }, []);
 
@@ -145,12 +59,9 @@ function LeaderBoard() {
                                        <td className="px-1 underline font-bold py-3">Approval Adjusted VaR</td>
                                       </tr>
                                     </thead>
-                                    {
-                                      fetchBlockChainData()
-                                    }
                                     <tbody id="protocols-tbody" className="divide-y divide-gray-200">
                                       {  
-                                        allProtocols
+                                        protocols
                                         .filter( (item) => {
                                           if (searchTerm===""){
                                             return item
@@ -165,7 +76,7 @@ function LeaderBoard() {
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{1} 🏆</td>
                                                 <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
-                                                <td className="px-1 py-3">{item[2]}</td>
+                                                <td className="px-1 py-3">${item[2]}</td>
                                               </tr>
                                             )
                                           } else if (i===1){
@@ -173,7 +84,7 @@ function LeaderBoard() {
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{2} 🥈</td>
                                                 <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
-                                                <td className="px-1 py-3">{item[2]}</td>
+                                                <td className="px-1 py-3">${item[2]}</td>
                                               </tr>
                                             )
                                           } else if (i===2){
@@ -181,7 +92,7 @@ function LeaderBoard() {
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{3} 🥉</td>
                                                 <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
-                                                <td className="px-1 py-3">{item[2]}</td>
+                                                <td className="px-1 py-3">${item[2]}</td>
                                               </tr>
                                             )
                                           } else {
@@ -189,7 +100,7 @@ function LeaderBoard() {
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{i+1}</td>
                                                 <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
-                                                <td className="px-1 py-3">{item[2]}</td>
+                                                <td className="px-1 py-3">${item[2]}</td>
                                               </tr>
                                             )
                                           }                                        
@@ -204,7 +115,7 @@ function LeaderBoard() {
                         </div>
                       </div>
                       <h3 className="text-center text-base pb-2 cursor-pointer pt-3" onClick={() => navigate("/totalVAR")}>
-                      💸 Total: $10000
+                      💸 Total: ${totalVaR}
                       </h3>
                     </div>
                   </div>
