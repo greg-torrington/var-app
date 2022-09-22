@@ -1,11 +1,10 @@
 import React from 'react'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { useNavigate } from "react-router-dom";
-import { chosenData } from "./LeaderBoard"; //import { chosenContracts, chosenVaRofContracts } from "./LeaderBoard"
 
 const data = [{name: 'January', uv: 400, pv: 2400, amt: 1000}, {name: "February", uv: 400, pv: 1800, amt: 1000}];
 
-function ChosenProtocol(){
+function ChosenProtocol(props){
 
     const navigate = useNavigate()
 
@@ -25,7 +24,7 @@ function ChosenProtocol(){
                         <div className="px-1">
                             <div className="general-styles_screen-centered-container__3fxeE h-full pb-2">
                                 <h1 className="text-center text-3xl">
-                                    🔥 {chosenData.name}
+                                    🔥 {props.chosenProtocol[0]}
                                 </h1>
                             </div>
                         </div>

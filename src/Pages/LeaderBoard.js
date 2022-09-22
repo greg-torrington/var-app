@@ -1,13 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import data from "./config.contracts.json"
-import { createClient } from "urql"
-
-export var chosenData
-export let allProtocols = []
-
-var dataArray = []
-var navigate
+import React, { useEffect, useState } from 'react'
 
 const APIURL = "https://api.thegraph.com/subgraphs/name/greg-torrington/greg-v3"
 const assetQuery = `
@@ -20,34 +11,18 @@ query {
 }
 `
 
-const client = createClient({
-  url: APIURL
-})
-
-async function sortData(){
-
-  data.map( (data) => {
-      dataArray.push(data)
-  })
-
-}
-
-async function navigateToProtolPage(i){
-  chosenData = dataArray[i]
-  navigate("/protocol");
-}
-
-function LeaderBoard() {
+function LeaderBoard(props) {
   const [searchTerm, setSearchTerm] = useState("")
   const [loading, setLoading] = useState(true)
   const [totalVaR, setTotalVaR] = useState(0)
+  const [allProtocols, setAllProtocols] = useState([])
 
   async function fetchBlockChainData() {
-    allProtocols = []
+    let protocols = []
     let protocolInfo = []
 
-    const assetResponse = await client.query(assetQuery).toPromise()
-    var rawAssetData = assetResponse.data.assets
+    const assetResponse = await props.client.query(assetQuery).toPromise()
+    let rawAssetData = assetResponse.data.assets
     protocolInfo[0] = "Maker"
     protocolInfo[1] = rawAssetData
 
@@ -77,7 +52,7 @@ function LeaderBoard() {
             skip += 1000
             noUsers = noUsers - 1000
 
-            usersPromiseArray.push(client.query(usersQuery).toPromise())
+            usersPromiseArray.push(props.client.query(usersQuery).toPromise())
         }
         let allUsersPromise = await Promise.all(usersPromiseArray)
         
@@ -87,7 +62,7 @@ function LeaderBoard() {
         }
         protocolInfo[1][i][0] = users
 
-        var contractVaR = 0
+        let contractVaR = 0
         for (var j=0; j<protocolInfo[1][i][0].length; j++){
             for (var c=0; c<protocolInfo[1][i][0][j].length; c++){
                 var allowance = protocolInfo[1][i][0][j][c].allowance
@@ -101,20 +76,19 @@ function LeaderBoard() {
                 }
             }
         }
-      protocolVaR += contractVaR
+        protocolVaR += contractVaR
     }
 
     protocolInfo[2] = protocolVaR.toFixed(2)
     setTotalVaR(totalVaR+parseFloat(protocolVaR.toFixed(2)))
-    allProtocols.push(protocolInfo)
+    protocols.push(protocolInfo)
+    setAllProtocols(protocols)
+    props.setProtocols(allProtocols)
     setLoading(false)
   }
 
-  navigate = useNavigate()
-
   useEffect(() => {
       fetchBlockChainData()
-      sortData()
   }, []);
 
 
@@ -172,7 +146,10 @@ function LeaderBoard() {
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{1} 🏆</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => {
+                                                  props.navigate("/protocol") 
+                                                  props.setChosenProtocol(allProtocols[i])
+                                                  }}>{item[0]}</td>
                                                 <td className="px-1 py-3">${item[2]}</td>
                                               </tr>
                                             )
@@ -180,7 +157,7 @@ function LeaderBoard() {
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{2} 🥈</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => props.navigate("/protocol")}>{item[0]}</td>
                                                 <td className="px-1 py-3">${item[2]}</td>
                                               </tr>
                                             )
@@ -188,7 +165,7 @@ function LeaderBoard() {
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{3} 🥉</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => props.navigate("/protocol")}>{item[0]}</td>
                                                 <td className="px-1 py-3">${item[2]}</td>
                                               </tr>
                                             )
@@ -196,7 +173,7 @@ function LeaderBoard() {
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{i+1}</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => navigateToProtolPage(i)}>{item[0]}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => props.navigate("/protocol")}>{item[0]}</td>
                                                 <td className="px-1 py-3">${item[2]}</td>
                                               </tr>
                                             )
@@ -211,7 +188,7 @@ function LeaderBoard() {
                           </form>
                         </div>
                       </div>
-                      <h3 className="text-center text-base pb-2 cursor-pointer pt-3" onClick={() => navigate("/totalVAR")}>
+                      <h3 className="text-center text-base pb-2 cursor-pointer pt-3" onClick={() => props.navigate("/totalVAR")}>
                       💸 Total: ${totalVaR}
                       </h3>
                     </div>
