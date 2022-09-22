@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom"
 import LeaderBoard from './Pages/LeaderBoard';
 import ChosenProtocol from './Pages/ChosenProtocol';
 import TotalVAR from './Pages/TotalVAR';
-import Loading from './Pages/Loading';
 
 function App(){
 
@@ -28,8 +27,7 @@ function App(){
             </div>
             <div className="m-auto pt-20 w-full">
                 <Routes>
-                  <Route path="/" element={<Loading/>} />
-                  <Route path="/leaderboard" element={ <LeaderBoard/> } />
+                  <Route path="/" element={<LeaderBoard/>} />
                   <Route path="/protocol" element={ <ChosenProtocol/> } />
                   <Route path="/totalVAR" element={ <TotalVAR/> } />
                 </Routes>
