@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const data = [{name: 'January', uv: 400, pv: 2400, amt: 1000}, {name: "February", uv: 400, pv: 1800, amt: 1000}];
 
-function TotalVAR(){
+function TotalVAR(props){
 
     const navigate = useNavigate()
 
