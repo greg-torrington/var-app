@@ -42,8 +42,8 @@ function App(){
             <div className="m-auto pt-20 w-full">
                 <Routes>
                   <Route path="/" element={<LeaderBoard client={client} navigate={navigate} setChosenProtocol={setChosenProtocol} setProtocols={setProtocols}/>} />
-                  <Route path="/protocol" element={ <ChosenProtocol chosenProtocol={chosenProtocol}/> } />
-                  <Route path="/totalVAR" element={ <TotalVAR protocols={protocols}/> } />
+                  <Route path="/protocol" element={ <ChosenProtocol chosenProtocol={chosenProtocol} navigate={navigate}/> } />
+                  <Route path="/totalVAR" element={ <TotalVAR protocols={protocols} navigate={navigate}/> } />
                 </Routes>
             </div>
           </div>
