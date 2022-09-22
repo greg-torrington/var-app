@@ -1,4 +1,3 @@
-import { all } from 'mathjs'
 import React, { useEffect, useState } from 'react'
 
 const APIURL = "https://api.thegraph.com/subgraphs/name/greg-torrington/greg-v3"
