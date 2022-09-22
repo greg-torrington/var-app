@@ -73,6 +73,7 @@ function LeaderBoard(props) {
             contracts[contractIndex]["VaR"] += balance
           }
         }
+        contracts[contractIndex]["VaR"] = contracts[contractIndex]["VaR"].toFixed(2)
         setTotalVaR(contracts[contractIndex]["VaR"])
         setAllContracts(contracts)
         setLoading(false)
@@ -141,8 +142,8 @@ function LeaderBoard(props) {
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{1} 🏆</td>
                                                 <td className="px-1 py-3 cursor-pointer" onClick={() => {
+                                                  props.setChosenProtocol(item)
                                                   props.navigate("/protocol") 
-                                                  props.setChosenProtocol(allContracts[i])
                                                   }}>{item.name}</td>
                                                 <td className="px-1 py-3">${item["VaR"]}</td>
                                               </tr>
@@ -151,7 +152,10 @@ function LeaderBoard(props) {
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{2} 🥈</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => props.navigate("/protocol")}>{item.name}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => {
+                                                  props.setChosenProtocol(item)
+                                                  props.navigate("/protocol")
+                                                  }}>{item.name}</td>
                                                 <td className="px-1 py-3">${item["VaR"]}</td>
                                               </tr>
                                             )
@@ -159,7 +163,10 @@ function LeaderBoard(props) {
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{3} 🥉</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => props.navigate("/protocol")}>{item.name}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => {
+                                                  props.setChosenProtocol(item)
+                                                  props.navigate("/protocol")
+                                                  }}>{item.name}</td>
                                                 <td className="px-1 py-3">${item["VaR"]}</td>
                                               </tr>
                                             )
@@ -167,7 +174,10 @@ function LeaderBoard(props) {
                                             return(
                                               <tr key={i+1} className="text-xs md:text-xxs lg:text-xs shadow-md">
                                                 <td className="px-1 py-3">{i+1}</td>
-                                                <td className="px-1 py-3 cursor-pointer" onClick={() => props.navigate("/protocol")}>{item.name}</td>
+                                                <td className="px-1 py-3 cursor-pointer" onClick={() => {
+                                                  props.setChosenProtocol(item)
+                                                  props.navigate("/protocol")
+                                                  }}>{item.name}</td>
                                                 <td className="px-1 py-3">${item["VaR"]}</td>
                                               </tr>
                                             )
