@@ -28,8 +28,8 @@ function LeaderBoard(props) {
 
     let usersPromiseArray = []
     let protocolVaR = 0;
-    for (var i=0; i<protocolInfo[1].length; i++){
-        var noUsers = protocolInfo[1][i].count
+    for (let i=0; i<protocolInfo[1].length; i++){
+        let noUsers = protocolInfo[1][i].count
   
         let skip = 0
         let first = 1000
@@ -57,16 +57,16 @@ function LeaderBoard(props) {
         let allUsersPromise = await Promise.all(usersPromiseArray)
         
         let users = []
-        for (var j=0; j<allUsersPromise.length; j++){
+        for (let j=0; j<allUsersPromise.length; j++){
             users.push(allUsersPromise[j].data.users)
         }
         protocolInfo[1][i][0] = users
 
         let contractVaR = 0
-        for (var j=0; j<protocolInfo[1][i][0].length; j++){
-            for (var c=0; c<protocolInfo[1][i][0][j].length; c++){
-                var allowance = protocolInfo[1][i][0][j][c].allowance
-                var balance = protocolInfo[1][i][0][j][c].balance
+        for (let j=0; j<protocolInfo[1][i][0].length; j++){
+            for (let c=0; c<protocolInfo[1][i][0][j].length; c++){
+                let allowance = protocolInfo[1][i][0][j][c].allowance
+                let balance = protocolInfo[1][i][0][j][c].balance
                 allowance = parseInt(allowance)/10**18
                 balance = parseInt(balance)/10**18
                 if (allowance<balance){
